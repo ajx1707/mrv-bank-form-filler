@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Challan ITNS-280</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border: 3px solid #000;
+        }
+        
+        .form-header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .form-subtitle {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 2px solid #000;
+        }
+        
+        .section-title {
+            background: #000;
+            color: white;
+            padding: 8px 12px;
+            margin: -15px -15px 15px -15px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row.single {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-row.triple {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #666;
+            font-size: 13px;
+            background: #fff;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #666;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 60px;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 5px;
+        }
+        
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: normal;
+        }
+        
+        .radio-group input[type="radio"],
+        .radio-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .box-input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(35px, 1fr));
+            gap: 5px;
+            max-width: 600px;
+        }
+        
+        .box-input-group input {
+            padding: 10px 5px;
+            text-align: center;
+            border: 1px solid #666;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .amount-breakdown {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 5px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        
+        .amount-breakdown label {
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .amount-breakdown input {
+            padding: 8px;
+            border: 1px solid #666;
+            font-size: 12px;
+        }
+        
+        .payment-details {
+            background: #f9f9f9;
+            padding: 15px;
+            border: 1px solid #ccc;
+            margin-top: 15px;
+        }
+        
+        .signature-section {
+            margin-top: 25px;
+            padding: 15px;
+            border: 2px solid #000;
+        }
+        
+        .signature-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .signature-box {
+            border: 1px solid #666;
+            padding: 15px;
+            min-height: 80px;
+        }
+        
+        .signature-box label {
+            font-size: 11px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .info-text {
+            font-size: 10px;
+            color: #666;
+            font-style: italic;
+            margin-top: 3px;
+        }
+        
+        .taxpayer-counterfoil {
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px dashed #666;
+            background: #f0f8ff;
+        }
+        
+        .counterfoil-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-align: center;
+            background: #000;
+            color: white;
+            padding: 8px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-header">
+            <div class="form-title">CHALLAN NO./ITNS 280</div>
+            <div class="form-subtitle">Tax Applicable (Tick One)</div>
+        </div>
+        
+        <!-- Tax Type Selection -->
+        <div class="section">
+            <div class="section-title">Tax Type & Assessment Year</div>
+            
+            <div class="radio-group" style="margin-bottom: 15px;">
+                <label>
+                    <input type="radio" name="tax_type" id="tax_type_companies" value="0020">
+                    (0020) INCOME TAX-COMPANIES (CORPORATION TAX)
+                </label>
+                <label>
+                    <input type="radio" name="tax_type" id="tax_type_other" value="0021">
+                    (0021) INCOME TAX (OTHER THAN COMPANIES)
+                </label>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Assessment Year</label>
+                    <input type="text" id="assessment_year" placeholder="e.g., 2024-25">
+                </div>
+                <div class="form-group">
+                    <label>Tax Applicable Code</label>
+                    <input type="text" id="tax_code" placeholder="0020 or 0021">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Personal Information -->
+        <div class="section">
+            <div class="section-title">Personal/Company Information</div>
+            
+            <div class="form-group">
+                <label>Permanent Account Number (PAN)</label>
+                <div class="box-input-group" style="max-width: 400px;">
+                    <input type="text" maxlength="1" id="pan_1">
+                    <input type="text" maxlength="1" id="pan_2">
+                    <input type="text" maxlength="1" id="pan_3">
+                    <input type="text" maxlength="1" id="pan_4">
+                    <input type="text" maxlength="1" id="pan_5">
+                    <input type="text" maxlength="1" id="pan_6">
+                    <input type="text" maxlength="1" id="pan_7">
+                    <input type="text" maxlength="1" id="pan_8">
+                    <input type="text" maxlength="1" id="pan_9">
+                    <input type="text" maxlength="1" id="pan_10">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="full_name" placeholder="Enter full name as per PAN">
+            </div>
+            
+            <div class="form-group">
+                <label>Complete Address with City & State</label>
+                <textarea id="address" placeholder="Enter complete address"></textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tel No.</label>
+                    <input type="text" id="tel_no" placeholder="Telephone Number">
+                </div>
+                <div class="form-group">
+                    <label>Pin Code</label>
+                    <input type="text" id="pin_code" placeholder="6-digit PIN">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Type of Payment -->
+        <div class="section">
+            <div class="section-title">Type of Payment (Tick One)</div>
+            
+            <div class="radio-group">
+                <label>
+                    <input type="checkbox" id="advance_tax" value="100">
+                    Advance Tax (100)
+                </label>
+                <label>
+                    <input type="checkbox" id="surtax" value="102">
+                    Surtax (102)
+                </label>
+            </div>
+            
+            <div class="radio-group">
+                <label>
+                    <input type="checkbox" id="self_assessment" value="300">
+                    Self Assessment Tax (300)
+                </label>
+                <label>
+                    <input type="checkbox" id="tax_distributed_profits" value="106">
+                    Tax on Distributed Profits of Domestic Companies (106)
+                </label>
+            </div>
+            
+            <div class="radio-group">
+                <label>
+                    <input type="checkbox" id="regular_assessment" value="400">
+                    Tax on Regular Assessment (400)
+                </label>
+                <label>
+                    <input type="checkbox" id="tax_distributed_income" value="107">
+                    Tax on Distributed Income to Unit Holders (107)
+                </label>
+            </div>
+            
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Payment Type Code</label>
+                <input type="text" id="payment_type_code" placeholder="Enter code (100, 102, 300, 106, 400, or 107)">
+            </div>
+        </div>
+        
+        <!-- Details of Payment -->
+        <div class="section">
+            <div class="section-title">Details of Payment (Amount in Rs. Only)</div>
+            
+            <div class="form-row triple">
+                <div class="form-group">
+                    <label>Income Tax</label>
+                    <input type="number" id="income_tax" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>Surcharge</label>
+                    <input type="number" id="surcharge" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>Education Cess</label>
+                    <input type="number" id="education_cess" placeholder="0">
+                </div>
+            </div>
+            
+            <div class="form-row triple">
+                <div class="form-group">
+                    <label>Interest</label>
+                    <input type="number" id="interest" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>Penalty</label>
+                    <input type="number" id="penalty" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>Others</label>
+                    <input type="number" id="others" placeholder="0">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Total Amount (Sum of all above)</label>
+                <input type="number" id="total_amount" placeholder="0" style="font-weight: bold; background: #f9f9f9;">
+            </div>
+            
+            <div class="form-group">
+                <label>Total (in words)</label>
+                <textarea id="total_words" placeholder="Enter amount in words"></textarea>
+            </div>
+            
+            <div style="margin-top: 15px; padding: 10px; background: #f0f0f0; border: 1px solid #ccc;">
+                <div style="font-weight: bold; font-size: 11px; margin-bottom: 8px;">Amount Breakdown (Crores, Lacs, Thousands, Hundreds, Tens, Units)</div>
+                <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px;">
+                    <input type="text" id="amount_crores" placeholder="CRORES" style="padding: 8px; text-align: center; border: 1px solid #666;">
+                    <input type="text" id="amount_lacs" placeholder="LACS" style="padding: 8px; text-align: center; border: 1px solid #666;">
+                    <input type="text" id="amount_thousands" placeholder="THOUS" style="padding: 8px; text-align: center; border: 1px solid #666;">
+                    <input type="text" id="amount_hundreds" placeholder="HUNDS" style="padding: 8px; text-align: center; border: 1px solid #666;">
+                    <input type="text" id="amount_tens" placeholder="TENS" style="padding: 8px; text-align: center; border: 1px solid #666;">
+                    <input type="text" id="amount_units" placeholder="UNITS" style="padding: 8px; text-align: center; border: 1px solid #666;">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bank Details & Payment Info -->
+        <div class="section">
+            <div class="section-title">Bank Details & Payment Information</div>
+            
+            <div class="form-group">
+                <label>Debit to A/c / Cheque credited on</label>
+                <input type="text" id="debit_account" placeholder="Account Number or Cheque Details">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Space for Bank Seal</label>
+                    <div class="box-input-group" style="max-width: 200px;">
+                        <input type="text" maxlength="1" id="seal_1">
+                        <input type="text" maxlength="1" id="seal_2">
+                        <input type="text" maxlength="1" id="seal_3">
+                        <input type="text" maxlength="1" id="seal_4">
+                        <input type="text" maxlength="1" id="seal_5">
+                        <input type="text" maxlength="1" id="seal_6">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Date of Payment</label>
+                    <input type="text" id="payment_date" placeholder="DD/MM/YYYY">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Paid in Cash/Debit to A/c/Cheque No.</label>
+                    <input type="text" id="payment_mode" placeholder="Cash / Debit / Cheque Number">
+                </div>
+                <div class="form-group">
+                    <label>Dated</label>
+                    <input type="text" id="cheque_date" placeholder="DD/MM/YYYY">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Drawn on (Name of the Bank and Branch)</label>
+                <input type="text" id="bank_branch" placeholder="Bank name and branch">
+            </div>
+        </div>
+        
+        <!-- Signature Section -->
+        <div class="signature-section">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="text" id="signature_date" placeholder="DD/MM/YYYY">
+                </div>
+                <div class="form-group">
+                    <label>Amount (Rs.)</label>
+                    <input type="text" id="signature_amount" placeholder="Total amount">
+                </div>
+            </div>
+            
+            <div class="signature-box" style="margin-top: 15px;">
+                <label>Signature of person making payment</label>
+                <div style="min-height: 60px; border-top: 1px solid #ccc; margin-top: 50px;"></div>
+            </div>
+            
+            <div style="text-align: right; margin-top: 10px; padding: 10px; background: #f9f9f9; border: 1px solid #ccc;">
+                <div style="font-weight: bold; font-size: 14px;">SPACE FOR BANK SEAL</div>
+                <div style="min-height: 60px; margin-top: 10px;"></div>
+            </div>
+        </div>
+        
+        <!-- Taxpayers Counterfoil -->
+        <div class="taxpayer-counterfoil">
+            <div class="counterfoil-title">Taxpayers Counterfoil (To be filled up by tax payer)</div>
+            
+            <div class="form-group">
+                <label>PAN</label>
+                <div class="box-input-group" style="max-width: 400px;">
+                    <input type="text" maxlength="1" id="counter_pan_1">
+                    <input type="text" maxlength="1" id="counter_pan_2">
+                    <input type="text" maxlength="1" id="counter_pan_3">
+                    <input type="text" maxlength="1" id="counter_pan_4">
+                    <input type="text" maxlength="1" id="counter_pan_5">
+                    <input type="text" maxlength="1" id="counter_pan_6">
+                    <input type="text" maxlength="1" id="counter_pan_7">
+                    <input type="text" maxlength="1" id="counter_pan_8">
+                    <input type="text" maxlength="1" id="counter_pan_9">
+                    <input type="text" maxlength="1" id="counter_pan_10">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Received from (Name)</label>
+                <input type="text" id="counter_name" placeholder="Name of taxpayer">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Cash/Debit to A/c/Cheque No.</label>
+                    <input type="text" id="counter_payment_mode" placeholder="Payment mode details">
+                </div>
+                <div class="form-group">
+                    <label>For Rs.</label>
+                    <input type="text" id="counter_amount" placeholder="Amount">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Rs. (in words)</label>
+                <input type="text" id="counter_amount_words" placeholder="Amount in words">
+            </div>
+            
+            <div class="form-group">
+                <label>Drawn on (Name of the Bank and Branch)</label>
+                <input type="text" id="counter_bank_branch" placeholder="Bank and branch">
+            </div>
+            
+            <div class="form-group">
+                <label>on account of</label>
+                <input type="text" id="counter_account_of" placeholder="Companies/Other than Companies">
+                <div class="info-text">Income Tax on (Strike out whichever is not applicable)<br>(To be filled up by person making payment)</div>
+            </div>
+            
+            <div style="text-align: right; margin-top: 20px; padding: 15px; border: 1px solid #000;">
+                <div style="font-weight: bold; font-size: 12px; margin-bottom: 10px;">SPACE FOR BANK SEAL</div>
+                <div style="min-height: 60px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-fill form from data collected by assistant
+        window.addEventListener('load', function() {
+            const rawData = localStorage.getItem('taxChallanData');
+            console.log('Raw data from localStorage:', rawData);
+            
+            if (!rawData) {
+                console.log('No tax challan data found in localStorage');
+                return;
+            }
+            
+            let formData = JSON.parse(rawData);
+            console.log('Parsed form data:', formData);
+            
+            if (Object.keys(formData).length > 0) {
+                console.log('Filling tax challan form with data...');
+                fillFormFields(formData);
+                localStorage.removeItem('taxChallanData');
+            } else {
+                console.log('Form data is empty');
+            }
+        });
+
+        function fillFormFields(data) {
+            console.log('Starting to fill form with data:', data);
+            
+            // Helper function to safely set field value
+            function setFieldValue(fieldId, value) {
+                const field = document.getElementById(fieldId);
+                if (field && value) {
+                    field.value = value;
+                    console.log(`✓ Set ${fieldId} = ${value}`);
+                    return true;
+                } else if (!field) {
+                    console.warn(`✗ Field not found: ${fieldId}`);
+                } else {
+                    console.log(`- Skipped ${fieldId} (no value)`);
+                }
+                return false;
+            }
+
+            // Helper function to fill PAN number boxes
+            function fillPAN(pan, prefix = 'pan') {
+                if (pan) {
+                    const digits = pan.toString().replace(/[^A-Z0-9]/g, '').substring(0, 10).toUpperCase();
+                    console.log(`Filling PAN (${prefix}):`, digits);
+                    for (let i = 0; i < digits.length && i < 10; i++) {
+                        setFieldValue(`${prefix}_${i + 1}`, digits[i]);
+                    }
+                }
+            }
+
+            // Helper function to check radio button
+            function checkRadio(name, value) {
+                const radio = document.querySelector(`input[name="${name}"][value="${value}"]`);
+                if (radio) {
+                    radio.checked = true;
+                    console.log(`✓ Checked radio ${name} = ${value}`);
+                }
+            }
+
+            // Fill basic fields
+            setFieldValue('assessment_year', data.assessment_year);
+            setFieldValue('tax_code', data.tax_code);
+            setFieldValue('full_name', data.full_name);
+            setFieldValue('address', data.address);
+            setFieldValue('tel_no', data.tel_no);
+            setFieldValue('pin_code', data.pin_code);
+            
+            // Fill PAN
+            fillPAN(data.pan, 'pan');
+            
+            // Tax type selection
+            if (data.tax_type) {
+                checkRadio('tax_type', data.tax_type);
+            }
+            
+            // Fill payment details
+            setFieldValue('payment_code', data.payment_code);
+            setFieldValue('income_tax', data.income_tax);
+            setFieldValue('surcharge', data.surcharge);
+            setFieldValue('education_cess', data.education_cess);
+            setFieldValue('interest', data.interest);
+            setFieldValue('penalty', data.penalty);
+            setFieldValue('others', data.others);
+            setFieldValue('total_amount', data.total_amount);
+            setFieldValue('total_words', data.total_words);
+            
+            // Fill bank section
+            setFieldValue('debit_date', data.debit_date);
+            setFieldValue('payment_date', data.payment_date);
+            setFieldValue('payment_mode', data.payment_mode);
+            setFieldValue('cheque_date', data.cheque_date);
+            setFieldValue('bank_branch', data.bank_branch);
+            setFieldValue('signature_date', data.signature_date);
+            
+            // Fill counterfoil section
+            fillPAN(data.pan, 'counter_pan');
+            setFieldValue('counter_name', data.full_name);
+            setFieldValue('counter_payment_mode', data.payment_mode);
+            setFieldValue('counter_amount', data.total_amount);
+            setFieldValue('counter_amount_words', data.total_words);
+            setFieldValue('counter_bank_branch', data.bank_branch);
+            setFieldValue('counter_account_of', data.tax_type === '0020' ? 'Companies' : 'Other than Companies');
+            
+            console.log('✓ Form filling complete');
+            
+            // Trigger print dialog after a short delay
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        }
+
+        // Auto-advance to next input in PAN boxes
+        document.querySelectorAll('[id^="pan_"], [id^="counter_pan_"]').forEach((input, index, inputs) => {
+            input.addEventListener('input', function(e) {
+                if (this.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+            
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        // Print button handler
+        function printForm() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

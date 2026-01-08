@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Bank Withdrawal Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 0;
+            border: 3px solid #000;
+        }
+        
+        .header {
+            display: grid;
+            grid-template-columns: 350px 1fr 200px;
+            border-bottom: 2px solid #000;
+        }
+        
+        .bank-section {
+            padding: 15px;
+            border-right: 2px solid #000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .bank-logo {
+            width: 50px;
+            height: 50px;
+            background: #1e3a8a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .bank-info {
+            flex: 1;
+        }
+        
+        .bank-name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+        
+        .branch-section {
+            padding: 15px;
+            border-right: 2px solid #000;
+            text-align: center;
+        }
+        
+        .branch-label {
+            font-size: 11px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-title-section {
+            text-align: center;
+            padding: 15px;
+            background: white;
+        }
+        
+        .form-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .date-section {
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .date-label {
+            font-size: 11px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .note-section {
+            background: #fff9e6;
+            padding: 15px;
+            border: 2px solid #fbbf24;
+            margin-bottom: 20px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        
+        .note-section strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .account-holder-section {
+            display: grid;
+            grid-template-columns: 1fr 200px;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #999;
+            font-size: 13px;
+            background: #fff;
+            border-radius: 3px;
+        }
+        
+        .box-input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(35px, 1fr));
+            gap: 5px;
+        }
+        
+        .box-input-group input {
+            padding: 10px 5px;
+            text-align: center;
+            border: 2px solid #999;
+            font-size: 13px;
+            font-weight: bold;
+            min-width: 35px;
+            width: 100%;
+        }
+        
+        .amount-section {
+            padding: 20px;
+            border: 2px solid #000;
+            margin: 20px 0;
+            background: #f9fafb;
+        }
+        
+        .amount-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .amount-label {
+            font-size: 13px;
+            font-weight: bold;
+            min-width: 150px;
+        }
+        
+        .rupee-symbol {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .amount-input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #666;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .words-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #666;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+        
+        .instruction-text {
+            font-size: 12px;
+            margin: 15px 0;
+            padding: 10px;
+            background: #f0f0f0;
+            border-left: 4px solid #1e3a8a;
+        }
+        
+        .phone-section {
+            margin: 20px 0;
+        }
+        
+        .signature-section {
+            margin: 25px 0;
+            padding: 20px;
+            border: 2px solid #000;
+            background: #fff;
+        }
+        
+        .signature-label {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+        
+        .signature-box {
+            border: 2px solid #999;
+            min-height: 100px;
+            background: #fafafa;
+            border-radius: 3px;
+        }
+        
+        .office-section {
+            border-top: 3px solid #000;
+            padding: 20px;
+            background: #e5e7eb;
+        }
+        
+        .office-title {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #1e3a8a;
+        }
+        
+        .office-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 2px;
+            border: 2px solid #000;
+        }
+        
+        .office-cell {
+            padding: 15px;
+            border: 1px solid #999;
+            background: white;
+            min-height: 80px;
+        }
+        
+        .office-cell label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="bank-section">
+                <div class="bank-logo">●</div>
+                <div class="bank-info">
+                    <div class="bank-name">STATE BANK OF INDIA</div>
+                    <div class="form-group" style="margin-top: 8px; margin-bottom: 0;">
+                        <label style="font-size: 10px;">Branch</label>
+                        <input type="text" id="branch" placeholder="Branch Name" style="padding: 6px; font-size: 12px;">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-title-section">
+                <div class="form-title">SAVINGS BANK WITHDRAWAL FORM</div>
+            </div>
+            
+            <div class="date-section">
+                <div class="date-label">Date</div>
+                <input type="date" id="withdrawal_date" style="width: 100%; padding: 8px; border: 2px solid #999;">
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <!-- Note Section -->
+            <div class="note-section">
+                <strong>NOTE:</strong>
+                This form is not a Cheque. Payment will be refused if the pass book is not produced with this form. This payment will be made only at the Home Branch.
+            </div>
+            
+            <!-- Account Number -->
+            <div class="account-holder-section" style="grid-template-columns: 1.5fr 1fr;">
+                <div class="form-group">
+                    <label>Name of the Account Holder(s)</label>
+                    <input type="text" id="account_holder_name" placeholder="Full Name as per Bank Records">
+                </div>
+                
+                <div class="form-group">
+                    <label>Account Number</label>
+                    <div class="box-input-group" style="grid-template-columns: repeat(14, 1fr);">
+                        <input type="text" maxlength="1" id="acc_1">
+                        <input type="text" maxlength="1" id="acc_2">
+                        <input type="text" maxlength="1" id="acc_3">
+                        <input type="text" maxlength="1" id="acc_4">
+                        <input type="text" maxlength="1" id="acc_5">
+                        <input type="text" maxlength="1" id="acc_6">
+                        <input type="text" maxlength="1" id="acc_7">
+                        <input type="text" maxlength="1" id="acc_8">
+                        <input type="text" maxlength="1" id="acc_9">
+                        <input type="text" maxlength="1" id="acc_10">
+                        <input type="text" maxlength="1" id="acc_11">
+                        <input type="text" maxlength="1" id="acc_12">
+                        <input type="text" maxlength="1" id="acc_13">
+                        <input type="text" maxlength="1" id="acc_14">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Amount Section -->
+            <div class="amount-section">
+                <div class="amount-row">
+                    <span class="amount-label">Please pay self/ourselves</span>
+                    <span class="rupee-symbol">₹</span>
+                    <input type="text" class="amount-input" id="amount_numbers" placeholder="Enter amount in numbers">
+                </div>
+                
+                <div class="amount-row">
+                    <span class="amount-label">Rupees (in words)</span>
+                    <span class="rupee-symbol">₹</span>
+                    <input type="text" class="words-input" id="amount_words" placeholder="Enter amount in words (e.g., Five Thousand Only)">
+                </div>
+                
+                <div style="text-align: right; margin-top: 10px; font-size: 12px; font-style: italic;">
+                    /only
+                </div>
+            </div>
+            
+            <!-- Instruction Text -->
+            <div class="instruction-text">
+                and debit the amount to my/our above savings bank account.
+            </div>
+            
+            <!-- Phone Number Section -->
+            <div class="phone-section">
+                <div class="form-group">
+                    <label>Phone/Mobile No.</label>
+                    <div class="box-input-group" style="max-width: 400px; grid-template-columns: repeat(10, 1fr);">
+                        <input type="text" maxlength="1" id="phone_1">
+                        <input type="text" maxlength="1" id="phone_2">
+                        <input type="text" maxlength="1" id="phone_3">
+                        <input type="text" maxlength="1" id="phone_4">
+                        <input type="text" maxlength="1" id="phone_5">
+                        <input type="text" maxlength="1" id="phone_6">
+                        <input type="text" maxlength="1" id="phone_7">
+                        <input type="text" maxlength="1" id="phone_8">
+                        <input type="text" maxlength="1" id="phone_9">
+                        <input type="text" maxlength="1" id="phone_10">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Signature Section -->
+            <div class="signature-section">
+                <div class="signature-label">Signature(s) of the Account Holder(s)</div>
+                <div class="signature-box"></div>
+            </div>
+        </div>
+        
+        <!-- Office Use Section -->
+        <div class="office-section">
+            <div class="office-title">FOR OFFICE USE</div>
+            
+            <div class="office-grid">
+                <div class="office-cell">
+                    <label>Passed by</label>
+                </div>
+                <div class="office-cell">
+                    <label>Signature</label>
+                </div>
+                <div class="office-cell">
+                    <label>Passed by</label>
+                </div>
+                <div class="office-cell">
+                    <label>Signature</label>
+                </div>
+                <div class="office-cell">
+                    <label>SWO</label>
+                </div>
+                <div class="office-cell">
+                    
+                </div>
+                <div class="office-cell">
+                    <label>PASSING OFFICER</label>
+                </div>
+                <div class="office-cell">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-fill form from data collected by assistant
+        window.addEventListener('load', function() {
+            console.log('=== WITHDRAWAL FORM PAGE LOADED ===');
+            console.log('All localStorage keys:', Object.keys(localStorage));
+            
+            const rawData = localStorage.getItem('withdrawalData');
+            console.log('Raw data from localStorage:', rawData);
+            
+            if (!rawData) {
+                console.log('No withdrawal data found in localStorage');
+                return;
+            }
+            
+            let formData = JSON.parse(rawData);
+            console.log('Parsed form data:', formData);
+            
+            if (Object.keys(formData).length > 0) {
+                console.log('Filling withdrawal form with data...');
+                fillFormFields(formData);
+                localStorage.removeItem('withdrawalData');
+            } else {
+                console.log('Form data is empty');
+            }
+        });
+
+        function fillFormFields(data) {
+            console.log('Starting to fill form with data:', data);
+            console.log('=== ALL FIELD NAMES IN DATA ===');
+            Object.keys(data).forEach(key => {
+                console.log(`"${key}": ${data[key]}`);
+            });
+            console.log('===============================');
+            
+            // Helper function to find field value with flexible key matching
+            function findValue(...possibleKeys) {
+                for (let key of possibleKeys) {
+                    if (data[key] !== undefined && data[key] !== null && data[key] !== '') {
+                        console.log(`✓ Found value for ${possibleKeys[0]}: using key "${key}" = ${data[key]}`);
+                        return data[key];
+                    }
+                }
+                // Try case-insensitive match
+                const lowerKeys = Object.keys(data).map(k => k.toLowerCase());
+                for (let searchKey of possibleKeys) {
+                    const lowerSearch = String(searchKey).toLowerCase();
+                    const matchIndex = lowerKeys.findIndex(k => k.includes(lowerSearch) || lowerSearch.includes(k));
+                    if (matchIndex >= 0) {
+                        const actualKey = Object.keys(data)[matchIndex];
+                        console.log(`✓ Found value for ${possibleKeys[0]}: using fuzzy match "${actualKey}" = ${data[actualKey]}`);
+                        return data[actualKey];
+                    }
+                }
+                console.warn(`✗ No value found for: ${possibleKeys.join(', ')}`);
+                return null;
+            }
+            
+            // Helper function to safely set field value
+            function setFieldValue(fieldId, value) {
+                const field = document.getElementById(fieldId);
+                if (field && value !== undefined && value !== null && value !== '') {
+                    field.value = value;
+                    console.log(`✓ Set ${fieldId} = ${value}`);
+                    return true;
+                } else if (!field) {
+                    console.warn(`✗ Field not found: ${fieldId}`);
+                } else {
+                    console.log(`- Skipped ${fieldId} (no value: ${value})`);
+                }
+                return false;
+            }
+
+            // Helper function to convert date to YYYY-MM-DD format
+            function convertDateFormat(dateStr) {
+                if (!dateStr) return '';
+                
+                // If already in YYYY-MM-DD format, return as is
+                if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+                    return dateStr;
+                }
+                
+                // Handle DD/MM/YYYY format
+                if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
+                    const parts = dateStr.split('/');
+                    return `${parts[2]}-${parts[1]}-${parts[0]}`; // Convert to YYYY-MM-DD
+                }
+                
+                // Handle other formats
+                try {
+                    const date = new Date(dateStr);
+                    if (!isNaN(date.getTime())) {
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        return `${year}-${month}-${day}`;
+                    }
+                } catch (e) {
+                    console.error('Date conversion error:', e);
+                }
+                
+                return dateStr;
+            }
+
+            // Helper function to fill box inputs (for account number and phone)
+            function fillBoxInputs(prefix, value) {
+                if (!value) {
+                    console.log(`- No value for ${prefix} box inputs`);
+                    return;
+                }
+                const valueStr = String(value).replace(/\s+/g, '').replace(/[^\d]/g, ''); // Remove spaces and non-digits
+                console.log(`Filling ${prefix} with: "${valueStr}" (${valueStr.length} digits)`);
+                
+                let filled = 0;
+                for (let i = 0; i < valueStr.length; i++) {
+                    const field = document.getElementById(`${prefix}_${i + 1}`);
+                    if (field) {
+                        field.value = valueStr[i];
+                        filled++;
+                    } else {
+                        console.warn(`✗ Box input not found: ${prefix}_${i + 1}`);
+                    }
+                }
+                console.log(`✓ Filled ${filled} digits for ${prefix}`);
+            }
+
+            // Fill basic information
+            const branchValue = findValue('branch', 'branch_name', 'Branch Name', 'Branch');
+            setFieldValue('branch', branchValue);
+            
+            // Convert and set date
+            const dateValue = findValue('withdrawal_date', 'date', 'Withdrawal Date', 'Date');
+            if (dateValue) {
+                const convertedDate = convertDateFormat(dateValue);
+                console.log(`Date conversion: "${dateValue}" → "${convertedDate}"`);
+                setFieldValue('withdrawal_date', convertedDate);
+            } else {
+                // Set today's date if not provided
+                const today = new Date().toISOString().split('T')[0];
+                setFieldValue('withdrawal_date', today);
+                console.log(`✓ Set withdrawal_date = ${today} (default)`);
+            }
+            
+            // Account holder name
+            const holderName = findValue('account_holder_name', 'Account Holder Name', 'name', 'applicant_name', 'holder_name');
+            setFieldValue('account_holder_name', holderName);
+            
+            // Account number - fill box inputs
+            const accountNum = findValue('account_number', 'Account Number', 'acc_number', 'accountNumber', 'account_no', 'account');
+            if (accountNum) {
+                fillBoxInputs('acc', accountNum);
+            }
+            
+            // Amount fields
+            const amountNum = findValue('amount_numbers', 'amount', 'Amount to Withdraw', 'amount_to_withdraw', 'withdrawal_amount', 'Amount');
+            const amountWords = findValue('amount_words', 'amount_in_words', 'Amount in Words', 'amount in words', 'rupees_in_words');
+            setFieldValue('amount_numbers', amountNum);
+            setFieldValue('amount_words', amountWords);
+            
+            // Phone number - fill box inputs
+            const phoneValue = findValue('phone_number', 'mobile_number', 'Phone/Mobile Number', 'phone', 'mobile', 'contact_number');
+            if (phoneValue) {
+                const cleanPhone = String(phoneValue).replace(/^\+91\s*/, '').replace(/\s+/g, '');
+                fillBoxInputs('phone', cleanPhone);
+            }
+            
+            console.log('✓ Form filling complete');
+            
+            // Trigger print dialog after a short delay
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        }
+    </script>
+</body>
+</html>

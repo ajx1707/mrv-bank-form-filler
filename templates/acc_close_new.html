@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Closure Request Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border: 3px solid #8b0000;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #8b0000;
+        }
+        
+        .form-title {
+            font-size: 20px;
+            font-weight: bold;
+            border: 2px solid #000;
+            padding: 8px 15px;
+        }
+        
+        .bank-logo {
+            background: #8b0000;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        .instructions {
+            background: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 11px;
+            border: 1px solid #ccc;
+        }
+        
+        .date-section {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        
+        .date-label {
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .date-boxes {
+            display: inline-grid;
+            grid-template-columns: repeat(8, 30px);
+            gap: 3px;
+        }
+        
+        .date-boxes input {
+            padding: 6px 2px;
+            text-align: center;
+            border: 1px solid #000;
+            font-size: 12px;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 2px solid #ddd;
+        }
+        
+        .section-title {
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            margin: -15px -15px 15px -15px;
+            font-weight: bold;
+            font-size: 13px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #999;
+            font-size: 12px;
+            background: #fff;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .box-input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(25px, 1fr));
+            gap: 3px;
+        }
+        
+        .box-input-group input {
+            padding: 8px 2px;
+            text-align: center;
+            border: 1px solid #999;
+            font-size: 12px;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+        
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: normal;
+        }
+        
+        .radio-group input[type="radio"],
+        .checkbox-group input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .checkbox-option {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        
+        .checkbox-option input[type="checkbox"] {
+            margin-top: 3px;
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        
+        .checkbox-option label {
+            font-size: 11px;
+            font-weight: normal;
+        }
+        
+        .note {
+            font-size: 10px;
+            font-style: italic;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .signature-section {
+            margin-top: 25px;
+            padding: 20px;
+            border: 2px solid #000;
+        }
+        
+        .signature-title {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+            background: #333;
+            color: white;
+            padding: 8px;
+            margin: -20px -20px 15px -20px;
+        }
+        
+        .signature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .signature-box {
+            border: 2px solid #999;
+            min-height: 100px;
+            background: #fafafa;
+        }
+        
+        .signature-label {
+            font-size: 10px;
+            text-align: center;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        
+        .name-box {
+            border: 1px solid #999;
+            padding: 8px;
+            margin-top: 5px;
+            min-height: 30px;
+            font-size: 11px;
+        }
+        
+        .office-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f9f9f9;
+            border: 2px solid #000;
+        }
+        
+        .office-title {
+            background: #333;
+            color: white;
+            padding: 8px;
+            margin: -20px -20px 15px -20px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 13px;
+        }
+        
+        .declaration-text {
+            font-size: 11px;
+            line-height: 1.6;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="form-title">ACCOUNT CLOSURE REQUEST</div>
+            <div class="bank-logo">
+                IDFC FIRST<br>Bank
+            </div>
+        </div>
+        
+        <!-- Instructions -->
+        <div class="instructions">
+            <strong>Please fill in Black Ink and in CAPITAL LETTERS.</strong><br>
+            All fields marked " * " are MANDATORY
+        </div>
+        
+        <!-- Date -->
+        <div class="date-section">
+            <span class="date-label">Date:</span>
+            <div class="date-boxes">
+                <input type="text" maxlength="1" id="date_dd1">
+                <input type="text" maxlength="1" id="date_dd2">
+                <input type="text" maxlength="1" id="date_mm1">
+                <input type="text" maxlength="1" id="date_mm2">
+                <input type="text" maxlength="1" id="date_yyyy1">
+                <input type="text" maxlength="1" id="date_yyyy2">
+                <input type="text" maxlength="1" id="date_yyyy3">
+                <input type="text" maxlength="1" id="date_yyyy4">
+            </div>
+        </div>
+        
+        <!-- Customer Details -->
+        <div class="section">
+            <div class="section-title">CUSTOMER DETAILS</div>
+            
+            <div class="form-group">
+                <label>Customer ID *</label>
+                <div class="box-input-group" style="max-width: 400px;">
+                    <input type="text" maxlength="1" id="cust_id_1">
+                    <input type="text" maxlength="1" id="cust_id_2">
+                    <input type="text" maxlength="1" id="cust_id_3">
+                    <input type="text" maxlength="1" id="cust_id_4">
+                    <input type="text" maxlength="1" id="cust_id_5">
+                    <input type="text" maxlength="1" id="cust_id_6">
+                    <input type="text" maxlength="1" id="cust_id_7">
+                    <input type="text" maxlength="1" id="cust_id_8">
+                    <input type="text" maxlength="1" id="cust_id_9">
+                    <input type="text" maxlength="1" id="cust_id_10">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Account Number *</label>
+                    <div class="box-input-group">
+                        <input type="text" maxlength="1" id="acc_1">
+                        <input type="text" maxlength="1" id="acc_2">
+                        <input type="text" maxlength="1" id="acc_3">
+                        <input type="text" maxlength="1" id="acc_4">
+                        <input type="text" maxlength="1" id="acc_5">
+                        <input type="text" maxlength="1" id="acc_6">
+                        <input type="text" maxlength="1" id="acc_7">
+                        <input type="text" maxlength="1" id="acc_8">
+                        <input type="text" maxlength="1" id="acc_9">
+                        <input type="text" maxlength="1" id="acc_10">
+                        <input type="text" maxlength="1" id="acc_11">
+                        <input type="text" maxlength="1" id="acc_12">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Customer Name *</label>
+                <input type="text" id="customer_name" placeholder="Full Name">
+            </div>
+            
+            <div class="form-group">
+                <label>Purpose of Closure</label>
+                <input type="text" id="purpose_closure" placeholder="Reason for closing account">
+            </div>
+            
+            <div class="note">
+                (Company accounts should be accompanied by a Board Resolution.)
+            </div>
+        </div>
+        
+        <!-- Desired Mode of Receipt -->
+        <div class="section">
+            <div class="section-title">DESIRED MODE OF RECEIPT* OF THE BALANCE AMOUNT</div>
+            
+            <div class="note" style="margin-bottom: 15px;">
+                (Please fill in the details for any of the options given below, as applicable, and strike out the rest)<br>
+                Note: An intimation to the above account will also be shared.
+            </div>
+            
+            <div class="checkbox-option">
+                <input type="checkbox" id="transfer_option" value="transfer">
+                <label for="transfer_option">To another bank account by electronic transfer:</label>
+            </div>
+            
+            <div class="form-group">
+                <label>Other Bank Account No.</label>
+                <div class="box-input-group" style="max-width: 500px;">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Beneficiary Account No.</label>
+                <input type="text" id="beneficiary_acc" placeholder="Beneficiary Account Number">
+            </div>
+            
+            <div class="form-group">
+                <label>Name of account holder:</label>
+                <input type="text" id="holder_name" placeholder="Account Holder Name">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Account Type:</label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="account_type" id="savings" value="savings">
+                            Savings Account
+                        </label>
+                        <label>
+                            <input type="radio" name="account_type" id="current" value="current">
+                            Current Account
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Bank Name:</label>
+                <input type="text" id="bank_name" placeholder="Bank Name">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Branch/City:</label>
+                    <input type="text" id="branch_city" placeholder="Branch Name and City">
+                </div>
+                <div class="form-group">
+                    <label>IFSC Code:</label>
+                    <input type="text" id="ifsc_code" placeholder="11-digit IFSC Code" maxlength="11">
+                </div>
+            </div>
+            
+            <div class="checkbox-option" style="margin-top: 20px;">
+                <input type="checkbox" id="demand_draft" value="draft">
+                <label for="demand_draft">By Demand Draft (Address made to third party addresses and cannot be made to third party accounts):</label>
+            </div>
+            
+            <div class="checkbox-option">
+                <input type="checkbox" id="idfc_account" value="idfc">
+                <label for="idfc_account">To another IDFC account in India:</label>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>IDFC Account:</label>
+                    <input type="text" id="idfc_account_no" placeholder="IDFC Account Number">
+                </div>
+                <div class="form-group">
+                    <label>City:</label>
+                    <input type="text" id="idfc_city" placeholder="City">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Name of account holder:</label>
+                <input type="text" id="idfc_holder_name" placeholder="Account Holder Name">
+            </div>
+            
+            <div class="checkbox-option" style="margin-top: 20px;">
+                <input type="checkbox" id="cash_option" value="cash">
+                <label for="cash_option">By Cash: (As per current Income Tax rules, if the account balance at the time of account closure exceeds ₹ 20,000/- payment will not be made through cash)</label>
+            </div>
+        </div>
+        
+        <!-- Declaration & Signatures -->
+        <div class="signature-section">
+            <div class="signature-title">DECLARATION & SIGNATURE(S)</div>
+            
+            <div class="declaration-text">
+                I/We understand, agree and acknowledge that IDFC FIRST Bank shall act solely on the basis of my/our instructions without any responsibility and liability upon the Bank.
+                <br><br>
+                I/We further declare that I/ We have already destroyed all cheque leaves and related card pertaining to above account.
+                <br><br>
+                It is my/our responsibility that all the ECS / Auto debit mandates linked to this account are amended.
+                <br><br>
+                All Account Holders to sign:
+            </div>
+            
+            <div class="signature-grid">
+                <div>
+                    <div class="signature-box"></div>
+                    <div class="signature-label">Signature</div>
+                    <div class="name-box"></div>
+                    <div class="signature-label">Name of First Account Holder/<br>Authorised Signatory</div>
+                </div>
+                
+                <div>
+                    <div class="signature-box"></div>
+                    <div class="signature-label">Signature</div>
+                    <div class="name-box"></div>
+                    <div class="signature-label">Name of Second Account Holder/<br>Authorised Signatory</div>
+                </div>
+                
+                <div>
+                    <div class="signature-box"></div>
+                    <div class="signature-label">Signature</div>
+                    <div class="name-box"></div>
+                    <div class="signature-label">Name of Third Account Holder/<br>Authorised Signatory</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- For Bank Use Only -->
+        <div class="office-section">
+            <div class="office-title">FOR BANK USE ONLY</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Service Request No.:</label>
+                    <input type="text" id="service_request_no" placeholder="Service Request Number">
+                </div>
+                <div class="form-group">
+                    <label>Employee ID:</label>
+                    <input type="text" id="employee_id" placeholder="Employee ID">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Name of the Branch Official:</label>
+                <input type="text" id="branch_official" placeholder="Branch Official Name">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Sourcing Branch Code:</label>
+                    <input type="text" id="sourcing_branch" placeholder="Branch Code">
+                </div>
+                <div class="form-group">
+                    <label>Signature of the Branch Official:</label>
+                    <div style="border: 1px solid #999; min-height: 60px; background: white;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div style="margin-top: 20px; text-align: right; font-size: 10px; color: #666;">
+            A4 Size
+        </div>
+    </div>
+    
+    <script>
+        window.addEventListener('load', function() {
+            const rawData = localStorage.getItem('accountClosureData');
+            if (rawData) {
+                try {
+                    const data = JSON.parse(rawData);
+                    function findValue(...fieldNames) {
+                        for (let fieldName of fieldNames) {
+                            if (data[fieldName] !== undefined && data[fieldName] !== null && data[fieldName] !== '') return data[fieldName];
+                        }
+                        return '';
+                    }
+                    function fillBoxInputs(prefix, value) {
+                        if (!value) return;
+                        const valueStr = value.toString();
+                        for (let i = 0; i < valueStr.length; i++) {
+                            const element = document.getElementById(`${prefix}_${i + 1}`);
+                            if (element) element.value = valueStr[i];
+                        }
+                    }
+                    const dateValue = findValue('date');
+                    if (dateValue) fillBoxInputs('date_dd', dateValue.substring(0,2)); fillBoxInputs('date_mm', dateValue.substring(3,5)); fillBoxInputs('date_yyyy', dateValue.substring(6,10));
+                    fillBoxInputs('cust_id', findValue('customer_id'));
+                    fillBoxInputs('acc', findValue('account_number'));
+                    const fillFormField = (id, value) => { const el = document.getElementById(id); if (el && value) el.value = value; };
+                    fillFormField('customer_name', findValue('customer_name'));
+                    fillFormField('purpose_closure', findValue('purpose_closure'));
+                    fillFormField('beneficiary_acc', findValue('beneficiary_acc'));
+                    fillFormField('holder_name', findValue('holder_name'));
+                    fillFormField('bank_name', findValue('bank_name'));
+                    fillFormField('branch_city', findValue('branch_city'));
+                    fillFormField('ifsc_code', findValue('ifsc_code'));
+                    const accountType = findValue('account_type');
+                    if (accountType) { const radio = document.getElementById(accountType); if (radio) radio.checked = true; }
+                    setTimeout(() => window.print(), 1000);
+                } catch (error) { console.error('Error:', error); }
+            }
+        });
+    </script>
+</body>
+</html>

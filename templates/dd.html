@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SBI Demand Draft / Banker's Cheque Application Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            background: white;
+            padding: 0;
+            border: 3px solid #000;
+        }
+        
+        .left-section {
+            border-right: 3px solid #000;
+            padding: 20px;
+            background: #fff;
+        }
+        
+        .right-section {
+            padding: 20px;
+            background: #fff;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #000;
+        }
+        
+        .bank-name {
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+        
+        .bank-name-eng {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #000;
+            font-size: 12px;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        
+        .denomination-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 12px;
+        }
+        
+        .denomination-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .denom-label {
+            font-weight: bold;
+            background: #f0f0f0;
+            text-align: left;
+            padding-left: 10px;
+        }
+        
+        .denomination-table input {
+            width: 100%;
+            border: none;
+            padding: 5px;
+            text-align: center;
+            font-size: 12px;
+        }
+        
+        .amount-section {
+            border: 2px solid #000;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        
+        .amount-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .inline-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .inline-group input {
+            flex: 1;
+        }
+        
+        .signature-section {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #000;
+        }
+        
+        .signature-row {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .signature-box {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #000;
+            min-height: 80px;
+        }
+        
+        .signature-box label {
+            font-size: 9px;
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .code-boxes {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+        }
+        
+        .code-boxes input {
+            width: 100%;
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #000;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .section-header {
+            background: #000;
+            color: white;
+            padding: 5px 10px;
+            font-weight: bold;
+            font-size: 11px;
+            margin: 15px 0 10px 0;
+        }
+        
+        .particulars-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        
+        .particulars-table td {
+            border: 1px solid #000;
+            padding: 5px;
+        }
+        
+        .particulars-label {
+            font-weight: bold;
+            font-size: 11px;
+            background: #f5f5f5;
+            width: 30%;
+            text-align: center;
+        }
+        
+        .particulars-table input {
+            width: 100%;
+            border: none;
+            padding: 5px;
+            font-size: 11px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .reference-code {
+            font-size: 9px;
+            text-align: center;
+            margin-top: 15px;
+            padding: 5px;
+            background: #f0f0f0;
+        }
+        
+        .form-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 13px;
+            margin: 10px 0;
+            padding: 8px;
+            border: 2px solid #000;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                border: 2px solid #000;
+            }
+        }
+        /* ...existing styles... */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                border: 2px solid #000;
+            }
+            .action-buttons {
+                display: none !important;
+            }
+        }
+        .action-buttons {
+            max-width: 1400px;
+            margin: 20px auto;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            padding: 0 20px;
+        }
+        .action-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .preview-btn {
+            background: #3498db;
+            color: white;
+        }
+        .preview-btn:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+        .print-btn {
+            background: #27ae60;
+            color: white;
+        }
+        .print-btn:hover {
+            background: #229954;
+            transform: scale(1.05);
+        }
+        .clear-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        .clear-btn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="action-buttons">
+        <button class="action-btn preview-btn" onclick="showPreview()">📋 Preview Form</button>
+        <button class="action-btn print-btn" onclick="printForm()">🖨️ Print as PDF</button>
+        <button class="action-btn clear-btn" onclick="clearForm()">🗑️ Clear Form</button>
+    </div>
+
+    <div class="container">
+        <!-- Left Section -->
+        <div class="left-section">
+            <div class="header">
+                <div class="bank-name">भारतीय स्टेट बैंक</div>
+                <div class="bank-name-eng">STATE BANK OF INDIA</div>
+                <div style="font-size: 11px; margin-top: 5px;">शाखा/BRANCH</div>
+                <input type="text" id="left_branch" style="width: 100%; margin-top: 5px; padding: 5px; border: 1px solid #000;">
+                <div style="font-size: 11px; margin-top: 8px;">दिनांक/DATE</div>
+                <input type="text" id="left_date" style="width: 100%; margin-top: 5px; padding: 5px; border: 1px solid #000;">
+            </div>
+            
+            <div class="form-group">
+                <label>आवेदक का नाम<br>Name of Applicant</label>
+                <textarea id="left_applicant_name"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>राशि (शब्दों में)<br>AMOUNT (in words)</label>
+                <textarea id="left_amount_words" style="min-height: 80px;"></textarea>
+            </div>
+            
+            <div class="amount-section">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="border: 1px solid #000; padding: 8px; font-weight: bold; font-size: 11px;">ड्राफ्ट/<br>चेक/बैंकर्स चैकी<br>Dft.<br>B.C. Amt.</td>
+                        <td style="border: 1px solid #000; padding: 5px;">
+                            <input type="text" id="left_dft_rs" placeholder="रु०/Rs." style="width: 100%; border: none; padding: 5px;">
+                        </td>
+                        <td style="border: 1px solid #000; padding: 5px;">
+                            <input type="text" id="left_dft_p" placeholder="पै०/P." style="width: 100%; border: none; padding: 5px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #000; padding: 8px; font-weight: bold; font-size: 11px;">कमिशन/Exchange</td>
+                        <td style="border: 1px solid #000; padding: 5px;">
+                            <input type="text" id="left_commission_rs" style="width: 100%; border: none; padding: 5px;">
+                        </td>
+                        <td style="border: 1px solid #000; padding: 5px;">
+                            <input type="text" id="left_commission_p" style="width: 100%; border: none; padding: 5px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #000; padding: 8px; font-weight: bold; font-size: 11px;">योग/TOTAL</td>
+                        <td style="border: 1px solid #000; padding: 5px;">
+                            <input type="text" id="left_total_rs" style="width: 100%; border: none; padding: 5px;">
+                        </td>
+                        <td style="border: 1px solid #000; padding: 5px;">
+                            <input type="text" id="left_total_p" style="width: 100%; border: none; padding: 5px;">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="signature-section">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="border: 1px solid #000; padding: 10px; font-size: 10px; font-weight: bold;">रोकड़िया<br>Cashier</td>
+                        <td style="border: 1px solid #000; padding: 10px; font-size: 10px; font-weight: bold;">रोकड़ अधिकारी<br>मार्गक्रम अधिकारी<br>Cash/Passing Officer</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Right Section -->
+        <div class="right-section">
+            <div class="header">
+                <div class="bank-name">भारतीय स्टेट बैंक</div>
+                <div class="bank-name-eng">STATE BANK OF INDIA</div>
+            </div>
+            
+            <div class="form-title">
+                ड्राफ्ट / बैंक आवेदन पत्र<br>
+                Draft/Banker's Cheque Application Form
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px; margin: 15px 0;">
+                <div>
+                    <label style="font-size: 11px; font-weight: bold; margin-bottom: 5px; display: block;">शाखा/BRANCH</label>
+                    <input type="text" id="right_branch" style="width: 100%; padding: 8px; border: 1px solid #000;">
+                </div>
+                <div>
+                    <label style="font-size: 11px; font-weight: bold; margin-bottom: 5px; display: block;">दिनांक/DATE</label>
+                    <input type="text" id="right_date" style="width: 100%; padding: 8px; border: 1px solid #000;">
+                </div>
+            </div>
+            
+            <div class="checkbox-group">
+                <label style="font-size: 12px; font-weight: bold;">कृपया जारी करें<br>Please issue</label>
+                <input type="checkbox" id="draft_checkbox">
+                <label for="draft_checkbox" style="font-size: 11px;">ड्राफ्ट<br>Draft</label>
+                <input type="checkbox" id="bankers_cheque_checkbox">
+                <label for="bankers_cheque_checkbox" style="font-size: 11px;">बैंकर्स चेक<br>Banker's Cheque</label>
+            </div>
+            
+            <div class="section-header">विवरण / PARTICULARS</div>
+            
+            <table class="particulars-table">
+                <tr>
+                    <td class="particulars-label">X 500</td>
+                    <td><input type="text" id="denom_500_qty" placeholder="Quantity"></td>
+                    <td><input type="text" id="denom_500_rs" placeholder="रु०/Rs."></td>
+                    <td><input type="text" id="denom_500_p" placeholder="पै०/P."></td>
+                </tr>
+                <tr>
+                    <td class="particulars-label">X 100</td>
+                    <td><input type="text" id="denom_100_qty"></td>
+                    <td><input type="text" id="denom_100_rs"></td>
+                    <td><input type="text" id="denom_100_p"></td>
+                </tr>
+                <tr>
+                    <td class="particulars-label">X 50</td>
+                    <td><input type="text" id="denom_50_qty"></td>
+                    <td><input type="text" id="denom_50_rs"></td>
+                    <td><input type="text" id="denom_50_p"></td>
+                </tr>
+                <tr>
+                    <td class="particulars-label">X 20</td>
+                    <td><input type="text" id="denom_20_qty"></td>
+                    <td><input type="text" id="denom_20_rs"></td>
+                    <td><input type="text" id="denom_20_p"></td>
+                </tr>
+                <tr>
+                    <td class="particulars-label">X 10</td>
+                    <td><input type="text" id="denom_10_qty"></td>
+                    <td><input type="text" id="denom_10_rs"></td>
+                    <td><input type="text" id="denom_10_p"></td>
+                </tr>
+                <tr>
+                    <td class="particulars-label">X 5</td>
+                    <td><input type="text" id="denom_5_qty"></td>
+                    <td><input type="text" id="denom_5_rs"></td>
+                    <td><input type="text" id="denom_5_p"></td>
+                </tr>
+                <tr>
+                    <td class="particulars-label">X 2</td>
+                    <td><input type="text" id="denom_2_qty"></td>
+                    <td><input type="text" id="denom_2_rs"></td>
+                    <td><input type="text" id="denom_2_p"></td>
+                </tr>
+                <tr>
+                    <td class="particulars-label">X 1</td>
+                    <td><input type="text" id="denom_1_qty"></td>
+                    <td><input type="text" id="denom_1_rs"></td>
+                    <td><input type="text" id="denom_1_p"></td>
+                </tr>
+            </table>
+            
+            <div class="form-group">
+                <label>नाम में/In Favour of</label>
+                <textarea id="in_favour_of" style="min-height: 50px;"></textarea>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin: 15px 0;">
+                <div></div>
+                <div>
+                    <label style="font-size: 11px; font-weight: bold; margin-bottom: 5px; display: block;">ड्राफ्ट/<br>चेक बैंक/बैंकर्स चैकी<br>DFT./<br>B.C. Amt.</label>
+                    <input type="text" id="dft_amount_rs" placeholder="रु०/Rs." style="width: 100%; padding: 8px; border: 1px solid #000;">
+                </div>
+                <div>
+                    <label style="font-size: 11px; margin-bottom: 5px; display: block; opacity: 0;">.</label>
+                    <input type="text" id="dft_amount_p" placeholder="पै०/P." style="width: 100%; padding: 8px; border: 1px solid #000;">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>रुपये/For Rupees</label>
+                <textarea id="for_rupees" style="min-height: 40px;"></textarea>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin: 15px 0;">
+                <div></div>
+                <div>
+                    <label style="font-size: 11px; font-weight: bold; margin-bottom: 5px; display: block;">कमिशन/<br>Exchange</label>
+                    <input type="text" id="exchange_rs" placeholder="रु०/Rs." style="width: 100%; padding: 8px; border: 1px solid #000;">
+                </div>
+                <div>
+                    <label style="font-size: 11px; margin-bottom: 5px; display: block; opacity: 0;">.</label>
+                    <input type="text" id="exchange_p" placeholder="पै०/P." style="width: 100%; padding: 8px; border: 1px solid #000;">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>शाखा पर देय/Payable at (Branch)</label>
+                <input type="text" id="payable_at_branch">
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin: 15px 0;">
+                <div>
+                    <label style="font-size: 11px; font-weight: bold; margin-bottom: 5px; display: block;">कूट संख्या/Code No.</label>
+                    <div class="code-boxes">
+                        <input type="text" maxlength="1" id="code_1">
+                        <input type="text" maxlength="1" id="code_2">
+                        <input type="text" maxlength="1" id="code_3">
+                        <input type="text" maxlength="1" id="code_4">
+                        <input type="text" maxlength="1" id="code_5">
+                        <input type="text" maxlength="1" id="code_6">
+                    </div>
+                </div>
+                <div>
+                    <label style="font-size: 11px; font-weight: bold; margin-bottom: 5px; display: block;">योग/<br>TOTAL</label>
+                    <input type="text" id="total_rs" placeholder="रु०/Rs." style="width: 100%; padding: 8px; border: 1px solid #000;">
+                </div>
+                <div>
+                    <label style="font-size: 11px; margin-bottom: 5px; display: block; opacity: 0;">.</label>
+                    <input type="text" id="total_p" placeholder="पै०/P." style="width: 100%; padding: 8px; border: 1px solid #000;">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>आवेदक के हस्ताक्षर<br>Signature of Applicant</label>
+                <div style="border: 1px solid #000; min-height: 60px; margin-top: 5px;"></div>
+            </div>
+            
+            <div style="margin-top: 15px; border: 1px solid #000; padding: 10px;">
+                <div style="font-weight: bold; font-size: 11px; margin-bottom: 10px;">PARTITION NO.</div>
+                
+                <div class="signature-row">
+                    <div class="signature-box">
+                        <label>रोकड़िया/आहरण सारणी क्रो<br>Cashier's/Transfer<br>Scroll No.</label>
+                    </div>
+                    <div class="signature-box">
+                        <label>रोकड़िया<br>Cashier</label>
+                    </div>
+                    <div class="signature-box">
+                        <label>रोकड़ अधिकारी/<br>मार्गक्रम अधिकारी<br>Cash/Passing Officer</label>
+                    </div>
+                    <div class="signature-box">
+                        <label>सूची बही<br>Joining Book</label>
+                    </div>
+                    <div class="signature-box">
+                        <label>ड्रा०/बैं चैक सं०<br>Dft./B.C. No.</label>
+                    </div>
+                    <div class="signature-box">
+                        <label>जांचकर्त्ता<br>Checked</label>
+                    </div>
+                    <div class="signature-box">
+                        <label>हस्ताक्षर<br>Signed</label>
+                    </div>
+                    <div class="signature-box">
+                        <label>ड्रा०/बैं चैक मात्र किया/Received the Dft./B.C</label>
+                    </div>
+                    <div class="signature-box">
+                        <label>आवेदक / Applicant</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="reference-code">
+                C.S.D. FBD. 3545/3-6-03/30,000 Pads/NDP CC No.-5003234
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-fill form from data collected by assistant
+        window.addEventListener('load', function() {
+            const rawData = localStorage.getItem('ddFormData');
+            console.log('Raw DD form data from localStorage:', rawData);
+            
+            if (!rawData) {
+                console.log('No DD form data found in localStorage');
+                return;
+            }
+            
+            let formData = JSON.parse(rawData);
+            console.log('Parsed DD form data:', formData);
+            
+            if (Object.keys(formData).length > 0) {
+                console.log('Filling DD form with data...');
+                fillDDForm(formData);
+                localStorage.removeItem('ddFormData');
+            }
+        });
+
+        function fillDDForm(data) {
+            console.log('Starting to fill DD form with data:', data);
+            
+            // Helper function to safely set field value
+            function setFieldValue(fieldId, value) {
+                const field = document.getElementById(fieldId);
+                if (field && value) {
+                    if (field.type === 'checkbox') {
+                        field.checked = true;
+                    } else {
+                        field.value = value;
+                    }
+                    console.log(`✓ Set ${fieldId} = ${value}`);
+                    return true;
+                } else if (!field) {
+                    console.warn(`✗ Field not found: ${fieldId}`);
+                }
+                return false;
+            }
+
+            // Fill both sections with branch and date
+            if (data.branch_name) {
+                setFieldValue('left_branch', data.branch_name);
+                setFieldValue('right_branch', data.branch_name);
+            }
+            
+            if (data.date) {
+                setFieldValue('left_date', data.date);
+                setFieldValue('right_date', data.date);
+            }
+
+            // Set instrument type checkbox
+            if (data.instrument_type) {
+                const type = data.instrument_type.toLowerCase();
+                if (type.includes('draft') || type === 'dd') {
+                    const checkbox = document.getElementById('draft_checkbox');
+                    if (checkbox) checkbox.checked = true;
+                } else if (type.includes('cheque') || type.includes('banker')) {
+                    const checkbox = document.getElementById('bankers_cheque_checkbox');
+                    if (checkbox) checkbox.checked = true;
+                }
+            }
+
+            // Fill beneficiary and amount details
+            if (data.in_favour_of) {
+                setFieldValue('in_favour_of', data.in_favour_of);
+            }
+            
+            if (data.amount_in_words) {
+                setFieldValue('for_rupees', data.amount_in_words);
+                setFieldValue('left_amount_words', data.amount_in_words);
+            }
+            
+            if (data.amount) {
+                setFieldValue('dft_amount_rs', data.amount.toString());
+                setFieldValue('left_dft_rs', data.amount.toString());
+            }
+
+            if (data.payable_at_branch) {
+                setFieldValue('payable_at_branch', data.payable_at_branch);
+            }
+            
+            if (data.applicant_name) {
+                setFieldValue('left_applicant_name', data.applicant_name);
+            }
+
+            // Fill denomination breakdown if provided
+            const denoms = ['500', '100', '50', '20', '10', '5', '2', '1'];
+            denoms.forEach(denom => {
+                const qtyKey = `denom_${denom}_qty`;
+                const qty = data[qtyKey];
+                
+                if (qty && qty !== '0') {
+                    console.log(`Processing ₹${denom}: ${qty} notes`);
+                    setFieldValue(`denom_${denom}_qty`, qty);
+                    
+                    const amount = parseInt(denom) * parseInt(qty);
+                    setFieldValue(`denom_${denom}_rs`, amount.toString());
+                }
+            });
+
+            console.log('DD form filling complete!');
+            alert('✓ Demand Draft form has been filled successfully! Please review and print.');
+        }
+
+        function showPreview() {
+            alert('Please review all filled fields carefully before printing.');
+        }
+
+        function printForm() {
+            window.print();
+        }
+
+        function clearForm() {
+            if (confirm('Are you sure you want to clear all form data? This action cannot be undone.')) {
+                document.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
+                document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+                document.querySelectorAll('textarea').forEach(textarea => textarea.value = '');
+                alert('Form cleared successfully!');
+            }
+        }
+    </script>
+</body>
+</html>

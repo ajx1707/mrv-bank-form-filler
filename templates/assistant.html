@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Form Assistant - Indian Bank</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #14b8a6;
+            --primary-dark: #0f766e;
+            --primary-light: #5eead4;
+            --danger: #ef4444;
+            --background: #ffffff;
+            --surface: #f0fdfa;
+            --text-primary: #134e4a;
+            --text-secondary: #0f766e;
+            --border: #99f6e4;
+            --shadow: 0 1px 3px 0 rgb(20 184 166 / 0.1), 0 1px 2px -1px rgb(20 184 166 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(20 184 166 / 0.1), 0 4px 6px -4px rgb(20 184 166 / 0.1);
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--background);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .header {
+            padding: 24px 32px;
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+        
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        .subtitle {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background: white;
+            color: var(--primary);
+        }
+        
+        .btn-success:hover {
+            background: var(--surface);
+            transform: translateY(-1px);
+        }
+        
+        .voice-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .voice-toggle.active {
+            background: rgba(255, 255, 255, 0.4);
+            border-color: white;
+        }
+        
+        .voice-toggle svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 32px;
+            background: var(--background);
+            scroll-behavior: smooth;
+        }
+        
+        .chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .chat-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+        
+        .message {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            animation: messageSlide 0.3s ease-out;
+            font-size: 15px;
+        }
+        
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.assistant {
+            background: var(--surface);
+            color: var(--text-primary);
+            align-self: flex-start;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        
+        .message.assistant strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .message.assistant em {
+            color: var(--primary-dark);
+            font-style: normal;
+            font-weight: 500;
+        }
+        
+        .message.assistant code {
+            background: rgba(20, 184, 166, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            color: var(--primary-dark);
+        }
+        
+        .message.assistant ul,
+        .message.assistant ol {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        
+        .message.assistant li {
+            margin: 4px 0;
+        }
+        
+        .message.user {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .typing-indicator {
+            display: none;
+            padding: 16px;
+            background: var(--surface);
+            border-radius: 16px;
+            width: fit-content;
+            align-self: flex-start;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-8px);
+                opacity: 1;
+            }
+        }
+        
+        .input-area {
+            padding: 20px 32px 24px;
+            background: white;
+            border-top: 2px solid var(--border);
+            box-shadow: 0 -4px 6px -1px rgb(20 184 166 / 0.05);
+        }
+        
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+        
+        #userInput {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+            resize: none;
+            min-height: 48px;
+            max-height: 120px;
+            color: var(--text-primary);
+        }
+        
+        #userInput:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+        }
+        
+        .icon-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+        
+        #voiceBtn {
+            background: var(--primary-dark);
+            color: white;
+        }
+        
+        #voiceBtn:hover {
+            transform: scale(1.05);
+            background: var(--text-primary);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+        }
+        
+        #voiceBtn.recording {
+            background: var(--danger);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+        }
+        
+        #sendBtn {
+            background: var(--primary);
+            color: white;
+        }
+        
+        #sendBtn:hover {
+            transform: scale(1.05);
+            background: var(--primary-dark);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+        }
+        
+        #sendBtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .form-complete-card {
+            background: var(--primary);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            margin: 12px 0;
+            animation: messageSlide 0.3s ease-out;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .form-complete-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .form-complete-card p {
+            font-size: 14px;
+            opacity: 0.95;
+            margin-bottom: 16px;
+        }
+        
+        .form-complete-card .btn {
+            background: white;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 12px 24px;
+        }
+        
+        .form-complete-card .btn:hover {
+            background: var(--surface);
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+            
+            .chat-container {
+                padding: 16px;
+            }
+            
+            .input-area {
+                padding: 16px;
+            }
+            
+            .message {
+                max-width: 85%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm-1-9v4h2v-4h-2zm0-2v1h2V9h-2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1>Indian Bank Form Assistant</h1>
+                </div>
+            </div>
+            {% if form_type == 'deposit' %}
+            <p class="subtitle">I'll help you fill out your deposit slip step by step</p>
+            {% elif form_type == 'dd' %}
+            <p class="subtitle">I'll help you create your demand draft / banker's cheque step by step</p>
+            {% elif form_type == 'tax_challan' %}
+            <p class="subtitle">I'll help you fill out your tax challan ITNS-280 step by step</p>
+            {% elif form_type == 'account_opening' %}
+            <p class="subtitle">I'll help you open a new current account step by step</p>
+            {% elif form_type == 'debit_card' %}
+            <p class="subtitle">I'll help you apply for a debit card step by step</p>
+            {% elif form_type == 'loan_application' %}
+            <p class="subtitle">I'll help you apply for a loan step by step</p>
+            {% elif form_type == 'withdrawal' %}
+            <p class="subtitle">I'll help you fill out your withdrawal form step by step</p>
+            {% elif form_type == 'kyc' %}
+            <p class="subtitle">I'll help you update your KYC information step by step</p>
+            {% elif form_type == 'account_closure' %}
+            <p class="subtitle">I'll help you process your account closure request step by step</p>
+            {% else %}
+            <p class="subtitle">I'll help you fill out your banking forms step by step</p>
+            {% endif %}
+            <div class="action-buttons">
+                <a href="/" class="btn btn-secondary" style="text-decoration: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back
+                </a>
+                <button id="resetBtn" class="btn btn-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                        <path d="M21 3v5h-5"/>
+                        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                        <path d="M8 16H3v5"/>
+                    </svg>
+                    Reset
+                </button>
+                <button id="voiceToggle" class="btn voice-toggle active" title="Toggle voice responses">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                    </svg>
+                    Voice ON
+                </button>
+                <button id="testDataBtn" class="btn btn-secondary" style="background: #f59e0b; border-color: #f59e0b;" title="Load test data to quickly preview forms">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="12" y1="18" x2="12" y2="12"/>
+                        <line x1="9" y1="15" x2="15" y2="15"/>
+                    </svg>
+                    Test Data
+                </button>
+                <a href="/form" target="_blank" class="btn btn-success" style="text-decoration: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                    View Form
+                </a>
+            </div>
+        </div>
+        
+        <div class="chat-container" id="chatContainer">
+            {% if form_type == 'deposit' %}
+            <div class="message assistant">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                Hello! I'm here to help you fill out your Deposit Slip. Let's get started!
+            </div>
+            {% elif form_type == 'dd' %}
+            <div class="message assistant">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                Hello! I'm here to help you create your Demand Draft or Banker's Cheque. Let's get started!
+            </div>
+            {% elif form_type == 'tax_challan' %}
+            <div class="message assistant">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                Hello! I'm here to help you fill out your Tax Challan ITNS-280. Let's get started!
+            </div>
+            {% elif form_type == 'account_opening' %}
+            <div class="message assistant">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                Hello! I'm here to help you open a new current account. Let's get started!
+            </div>
+            {% elif form_type == 'debit_card' %}
+            <div class="message assistant">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                    <line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+                Hello! I'm here to help you apply for a debit card for your NRE account. Let's get started!
+            </div>
+            {% elif form_type == 'loan_application' %}
+            <div class="message assistant">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                Hello! I'm here to help you apply for a loan from State Bank of India. Let's get started!
+            </div>
+            {% elif form_type == 'withdrawal' %}
+            <div class="message assistant">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                </svg>
+                Hello! I'm here to help you fill out your Savings Bank Withdrawal Form. Let's get started!
+            </div>
+            {% elif form_type == 'kyc' %}
+            <div class="message assistant">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="8.5" cy="7" r="4"/>
+                    <polyline points="17 11 19 13 23 9"/>
+                </svg>
+                Hello! I'm here to help you update your KYC information for existing customers. Let's get started!
+            </div>
+            {% elif form_type == 'account_closure' %}
+            <div class="message assistant">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="15" y1="9" x2="9" y2="15"/>
+                    <line x1="9" y1="9" x2="15" y2="15"/>
+                </svg>
+                Hello! I'm here to help you with your account closure request. Let's process this carefully.
+            </div>
+            {% else %}
+            <div class="message assistant">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                Hello! I'm here to help you with banking forms. 
+                <br><br>
+                <strong>What would you like to do today?</strong>
+                <br><br>
+                1. Deposit money into your account (Deposit Slip)
+                <br>
+                2. Send money to someone (Demand Draft / Banker's Cheque)
+            </div>
+            {% endif %}
+            <div class="typing-indicator" id="typingIndicator">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        
+        <div class="input-area">
+            <div class="input-wrapper">
+                <textarea id="userInput" placeholder="Type your answer or use voice..." rows="1"></textarea>
+                <button id="voiceBtn" class="icon-btn" title="Voice input">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                    </svg>
+                </button>
+                <button id="sendBtn" class="icon-btn" title="Send message">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatContainer = document.getElementById('chatContainer');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const voiceBtn = document.getElementById('voiceBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const voiceToggle = document.getElementById('voiceToggle');
+        const typingIndicator = document.getElementById('typingIndicator');
+        
+        // Get form type from Flask template
+        const formType = '{{ form_type }}';
+        let sessionId = 'session_' + Date.now();
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+        let voiceEnabled = true;
+        let speechSynthesis = window.speechSynthesis;
+        let currentUtterance = null;
+
+        // Check if browser supports speech synthesis
+        if (!('speechSynthesis' in window)) {
+            console.warn('Speech synthesis not supported');
+            voiceToggle.style.display = 'none';
+        }
+
+        // Toggle voice on/off
+        voiceToggle.addEventListener('click', () => {
+            voiceEnabled = !voiceEnabled;
+            
+            if (voiceEnabled) {
+                voiceToggle.classList.add('active');
+                voiceToggle.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                    </svg>
+                    Voice ON
+                `;
+            } else {
+                voiceToggle.classList.remove('active');
+                voiceToggle.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                    </svg>
+                    Voice OFF
+                `;
+                // Stop any ongoing speech
+                speechSynthesis.cancel();
+            }
+        });
+
+        // Function to speak text
+        function speakText(text) {
+            if (!voiceEnabled || !speechSynthesis) return;
+
+            // Cancel any ongoing speech
+            speechSynthesis.cancel();
+
+            // Clean text for speech (remove HTML, markdown, special characters)
+            let cleanText = text
+                .replace(/<[^>]*>/g, '') // Remove HTML tags
+                .replace(/\*\*([^*]+)\*\*/g, '$1') // Remove bold markdown
+                .replace(/\*([^*]+)\*/g, '$1') // Remove italic markdown
+                .replace(/₹/g, 'Rupees ') // Replace rupee symbol
+                .replace(/\n+/g, '. ') // Replace line breaks with pauses
+                .trim();
+
+            if (!cleanText) return;
+
+            currentUtterance = new SpeechSynthesisUtterance(cleanText);
+            
+            // Configure voice settings
+            currentUtterance.rate = 0.9; // Slightly slower for elderly users
+            currentUtterance.pitch = 1.0;
+            currentUtterance.volume = 1.0;
+            
+            // Try to use a female Indian English voice if available
+            const voices = speechSynthesis.getVoices();
+            const preferredVoice = voices.find(voice => 
+                voice.lang.includes('en-IN') || 
+                voice.lang.includes('en-GB') ||
+                voice.name.includes('Female')
+            );
+            
+            if (preferredVoice) {
+                currentUtterance.voice = preferredVoice;
+            }
+
+            // Visual feedback
+            currentUtterance.onstart = () => {
+                console.log('Speaking:', cleanText);
+            };
+
+            currentUtterance.onend = () => {
+                console.log('Finished speaking');
+            };
+
+            currentUtterance.onerror = (event) => {
+                console.error('Speech error:', event);
+            };
+
+            speechSynthesis.speak(currentUtterance);
+        }
+
+        // Auto-resize textarea
+        userInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Send message
+        async function sendMessage(isFromAudio = false) {
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            // Stop any ongoing speech when user sends message
+            speechSynthesis.cancel();
+
+            addMessage(message, 'user');
+            userInput.value = '';
+            userInput.style.height = 'auto';
+            sendBtn.disabled = true;
+
+            typingIndicator.style.display = 'block';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        session_id: sessionId,
+                        form_type: formType,
+                        is_from_audio: isFromAudio
+                    })
+                });
+
+                const data = await response.json();
+                typingIndicator.style.display = 'none';
+                sendBtn.disabled = false;
+
+                if (data.success) {
+                    addMessage(data.response, 'assistant');
+                    
+                    // If form is complete, automatically fill the form and show button
+                    if (data.form_complete && data.form_data && Object.keys(data.form_data).length > 0) {
+                        console.log('✓ Form completed! Received data:', data.form_data);
+                        
+                        // Determine form type and store appropriately
+                        const formType = data.form_data.form_type || 'DEPOSIT';
+                        console.log('Form type detected:', formType);
+                        
+                        if (formType === 'DD') {
+                            // Store DD form data
+                            localStorage.setItem('ddFormData', JSON.stringify(data.form_data));
+                            console.log('✓ DD form data saved to localStorage');
+                            
+                            const card = document.createElement('div');
+                            card.className = 'form-complete-card';
+                            card.innerHTML = `
+                                <h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Demand Draft Ready!
+                                </h3>
+                                <p>All information has been collected successfully</p>
+                                <button class="btn" onclick="window.open('/dd', '_blank')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                    </svg>
+                                    View & Print Demand Draft
+                                </button>
+                            `;
+                            chatContainer.insertBefore(card, typingIndicator);
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                            
+                            // Speak confirmation
+                            speakText('Demand Draft form is ready! All information has been collected successfully. You can now view and print your demand draft.');
+                        } else if (formType === 'TAX_CHALLAN') {
+                            // Store Tax Challan form data
+                            localStorage.setItem('taxChallanData', JSON.stringify(data.form_data));
+                            console.log('✓ Tax Challan data saved to localStorage');
+                            
+                            const card = document.createElement('div');
+                            card.className = 'form-complete-card';
+                            card.innerHTML = `
+                                <h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Tax Challan Ready!
+                                </h3>
+                                <p>All information has been collected successfully</p>
+                                <button class="btn" onclick="window.open('/tax_challan', '_blank')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                    </svg>
+                                    View & Print Tax Challan
+                                </button>
+                            `;
+                            chatContainer.insertBefore(card, typingIndicator);
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                            
+                            // Speak confirmation
+                            speakText('Tax Challan form is ready! All information has been collected successfully. You can now view and print your tax challan.');
+                        } else if (formType === 'ACCOUNT_OPENING') {
+                            // Store Account Opening form data
+                            localStorage.setItem('accountOpeningData', JSON.stringify(data.form_data));
+                            console.log('✓ Account Opening data saved to localStorage');
+                            
+                            const card = document.createElement('div');
+                            card.className = 'form-complete-card';
+                            card.innerHTML = `
+                                <h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Account Opening Form Ready!
+                                </h3>
+                                <p>All information has been collected successfully</p>
+                                <button class="btn" onclick="window.open('/account_opening', '_blank')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                    </svg>
+                                    View & Print Account Opening Form
+                                </button>
+                            `;
+                            chatContainer.insertBefore(card, typingIndicator);
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                            
+                            // Speak confirmation
+                            speakText('Account opening form is ready! All information has been collected successfully. You can now view and print your account opening form.');
+                        } else if (formType === 'DEBIT_CARD') {
+                            // Store Debit Card form data
+                            localStorage.setItem('debitCardData', JSON.stringify(data.form_data));
+                            console.log('✓ Debit Card data saved to localStorage');
+                            
+                            const card = document.createElement('div');
+                            card.className = 'form-complete-card';
+                            card.innerHTML = `
+                                <h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Debit Card Application Ready!
+                                </h3>
+                                <p>All information has been collected successfully</p>
+                                <button class="btn" onclick="window.open('/debit_card', '_blank')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+                                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                                        <line x1="1" y1="10" x2="23" y2="10"/>
+                                    </svg>
+                                    View & Print Debit Card Application
+                                </button>
+                            `;
+                            chatContainer.insertBefore(card, typingIndicator);
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                            
+                            // Speak confirmation
+                            speakText('Debit card application is ready! All information has been collected successfully. You can now view and print your debit card application form.');
+                        } else if (formType === 'LOAN_APPLICATION') {
+                            // Store Loan Application form data
+                            console.log('📝 Saving loan application data:', data.form_data);
+                            localStorage.setItem('loanApplicationData', JSON.stringify(data.form_data));
+                            console.log('✓ Loan Application data saved to localStorage');
+                            console.log('✓ Verification - data in localStorage:', localStorage.getItem('loanApplicationData'));
+                            
+                            const card = document.createElement('div');
+                            card.className = 'form-complete-card';
+                            card.innerHTML = `
+                                <h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Loan Application Ready!
+                                </h3>
+                                <p>All information has been collected successfully</p>
+                                <button class="btn" onclick="window.open('/loan_application', '_blank')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                    </svg>
+                                    View & Print Loan Application
+                                </button>
+                            `;
+                            chatContainer.insertBefore(card, typingIndicator);
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                            
+                            // Speak confirmation
+                            speakText('Loan application is ready! All information has been collected successfully. You can now view and print your loan application form.');
+                        } else if (formType === 'WITHDRAWAL') {
+                            // Store Withdrawal form data
+                            localStorage.setItem('withdrawalData', JSON.stringify(data.form_data));
+                            console.log('✓ Withdrawal form data saved to localStorage');
+                            
+                            const card = document.createElement('div');
+                            card.className = 'form-complete-card';
+                            card.innerHTML = `
+                                <h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Withdrawal Form Ready!
+                                </h3>
+                                <p>All information has been collected successfully</p>
+                                <button class="btn" onclick="window.open('/withdrawal', '_blank')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+                                        <path d="M21 4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2-2z"/>
+                                        <line x1="1" y1="10" x2="23" y2="10"/>
+                                    </svg>
+                                    View & Print Withdrawal Form
+                                </button>
+                            `;
+                            chatContainer.insertBefore(card, typingIndicator);
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                            
+                            // Speak confirmation
+                            speakText('Withdrawal form is ready! All information has been collected successfully. You can now view and print your withdrawal form.');
+                        } else if (formType === 'KYC') {
+                            // Store KYC form data
+                            localStorage.setItem('kycData', JSON.stringify(data.form_data));
+                            console.log('✓ KYC form data saved to localStorage');
+                            
+                            const card = document.createElement('div');
+                            card.className = 'form-complete-card';
+                            card.innerHTML = `
+                                <h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    KYC Form Ready!
+                                </h3>
+                                <p>All information has been collected successfully</p>
+                                <button class="btn" onclick="window.open('/kyc', '_blank')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="8.5" cy="7" r="4"/>
+                                        <polyline points="17 11 19 13 23 9"/>
+                                    </svg>
+                                    View & Print KYC Form
+                                </button>
+                            `;
+                            chatContainer.insertBefore(card, typingIndicator);
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                            
+                            // Speak confirmation
+                            speakText('KYC update form is ready! All information has been collected successfully. You can now view and print your KYC form.');
+                        } else if (formType === 'ACCOUNT_CLOSURE') {
+                            // Store Account Closure form data
+                            localStorage.setItem('accountClosureData', JSON.stringify(data.form_data));
+                            console.log('✓ Account closure form data saved to localStorage');
+                            
+                            const card = document.createElement('div');
+                            card.className = 'form-complete-card';
+                            card.innerHTML = `
+                                <h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Account Closure Form Ready!
+                                </h3>
+                                <p>All information has been collected successfully</p>
+                                <button class="btn" onclick="window.open('/account_closure', '_blank')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="15" y1="9" x2="9" y2="15"/>
+                                        <line x1="9" y1="9" x2="15" y2="15"/>
+                                    </svg>
+                                    View & Print Closure Form
+                                </button>
+                            `;
+                            chatContainer.insertBefore(card, typingIndicator);
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                            
+                            // Speak confirmation
+                            speakText('Account closure form is ready! All information has been collected successfully. You can now view and print your account closure form.');
+                        } else {
+                            // Existing deposit slip logic
+                            localStorage.setItem('depositSlipData', JSON.stringify(data.form_data));
+                            console.log('✓ Deposit slip data saved to localStorage');
+                            
+                            showFormCompleteCard();
+                        }
+                    }
+                } else {
+                    addMessage('Sorry, there was an error: ' + data.error, 'assistant');
+                    speakText('Sorry, there was an error');
+                }
+            } catch (error) {
+                typingIndicator.style.display = 'none';
+                sendBtn.disabled = false;
+                addMessage('Sorry, there was an error processing your request.', 'assistant');
+                speakText('Sorry, there was an error processing your request');
+            }
+        }
+
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            // Store original text for speech before formatting
+            const originalText = text;
+            
+            // Format assistant messages
+            if (sender === 'assistant') {
+                // Convert **text** to bold
+                text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                
+                // Convert *text* to emphasis
+                text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+                
+                // Convert line breaks to <br>
+                text = text.replace(/\n/g, '<br>');
+                
+                // Add spacing after questions
+                text = text.replace(/\?<br>/g, '?<br><br>');
+                
+                // Speak the message
+                speakText(originalText);
+            } else {
+                text = text.replace(/\n/g, '<br>');
+            }
+            
+            messageDiv.innerHTML = text;
+            chatContainer.insertBefore(messageDiv, typingIndicator);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function showFormCompleteCard() {
+            const card = document.createElement('div');
+            card.className = 'form-complete-card';
+            card.innerHTML = `
+                <h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Form Ready!
+                </h3>
+                <p>All information has been collected successfully</p>
+                <button class="btn" onclick="window.open('/form', '_blank')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                    View & Print Deposit Slip
+                </button>
+            `;
+            chatContainer.insertBefore(card, typingIndicator);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Speak completion message
+            speakText('Form is ready! All information has been collected successfully. You can now view and print your deposit slip.');
+        }
+
+        // Voice recording
+        async function toggleRecording() {
+            if (!isRecording) {
+                await startRecording();
+            } else {
+                stopRecording();
+            }
+        }
+
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    await transcribeAudio(audioBlob);
+                    stream.getTracks().forEach(track => track.stop());
+                };
+
+                mediaRecorder.start();
+                isRecording = true;
+                voiceBtn.classList.add('recording');
+                voiceBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <rect x="6" y="6" width="12" height="12"/>
+                    </svg>
+                `;
+            } catch (error) {
+                console.error('Error accessing microphone:', error);
+                alert('Could not access microphone');
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                voiceBtn.classList.remove('recording');
+                voiceBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                    </svg>
+                `;
+            }
+        }
+
+        async function transcribeAudio(audioBlob) {
+            const formData = new FormData();
+            formData.append('audio', audioBlob, 'recording.webm');
+
+            try {
+                const response = await fetch('/transcribe', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Set the transcribed text in input
+                    userInput.value = data.text;
+                    userInput.dispatchEvent(new Event('input'));
+                    
+                    // Automatically send the message with is_from_audio = true
+                    await sendMessage(true);
+                } else {
+                    alert('Transcription error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error transcribing audio:', error);
+                alert('Could not transcribe audio');
+            }
+        }
+
+        // Reset conversation
+        async function resetConversation() {
+            if (!confirm('Are you sure you want to reset the conversation?')) return;
+
+            // Stop any ongoing speech
+            speechSynthesis.cancel();
+
+            try {
+                await fetch('/reset_conversation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: sessionId })
+                });
+
+                sessionId = 'session_' + Date.now();
+                chatContainer.innerHTML = `
+                    <div class="message assistant">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        Hello! I'm here to help you with banking forms. 
+                        <br><br>
+                        <strong>What would you like to do today?</strong>
+                        <br><br>
+                        1. Deposit money into your account (Deposit Slip)
+                        <br>
+                        2. Send money to someone (Demand Draft / Banker's Cheque)
+                    </div>
+                    <div class="typing-indicator" id="typingIndicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                `;
+                
+                // Speak welcome message based on form type
+                let welcomeMessage = '';
+                if (formType === 'deposit') {
+                    welcomeMessage = 'Hello! I\'m here to help you fill out your Deposit Slip. Let\'s get started!';
+                } else if (formType === 'dd') {
+                    welcomeMessage = 'Hello! I\'m here to help you create your Demand Draft or Banker\'s Cheque. Let\'s get started!';
+                } else if (formType === 'tax_challan') {
+                    welcomeMessage = 'Hello! I\'m here to help you fill out your Tax Challan ITNS-280. Let\'s get started!';
+                } else if (formType === 'account_opening') {
+                    welcomeMessage = 'Hello! I\'m here to help you open a new current account. Let\'s get started!';
+                } else if (formType === 'debit_card') {
+                    welcomeMessage = 'Hello! I\'m here to help you apply for a debit card for your NRE account. Let\'s get started!';
+                } else if (formType === 'loan_application') {
+                    welcomeMessage = 'Hello! I\'m here to help you apply for a loan from State Bank of India. Let\'s get started!';
+                } else if (formType === 'withdrawal') {
+                    welcomeMessage = 'Hello! I\'m here to help you fill out your Savings Bank Withdrawal Form. Let\'s get started!';
+                } else if (formType === 'kyc') {
+                    welcomeMessage = 'Hello! I\'m here to help you update your KYC information for existing customers. Let\'s get started!';
+                } else if (formType === 'account_closure') {
+                    welcomeMessage = 'Hello! I\'m here to help you with your account closure request. Let\'s process this carefully.';
+                } else {
+                    welcomeMessage = 'Hello! I am here to help you with banking forms. What would you like to do today? Deposit money into your account, or send money to someone through Demand Draft?';
+                }
+                setTimeout(() => speakText(welcomeMessage), 500);
+            } catch (error) {
+                console.error('Error resetting conversation:', error);
+            }
+        }
+
+        // Load voices when available
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = () => {
+                console.log('Available voices:', speechSynthesis.getVoices().map(v => v.name));
+            };
+        }
+
+        // Speak welcome message on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                let welcomeMessage = '';
+                if (formType === 'deposit') {
+                    welcomeMessage = 'Hello! I\'m here to help you fill out your Deposit Slip. Let\'s get started!';
+                } else if (formType === 'dd') {
+                    welcomeMessage = 'Hello! I\'m here to help you create your Demand Draft or Banker\'s Cheque. Let\'s get started!';
+                } else if (formType === 'tax_challan') {
+                    welcomeMessage = 'Hello! I\'m here to help you fill out your Tax Challan ITNS-280. Let\'s get started!';
+                } else if (formType === 'account_opening') {
+                    welcomeMessage = 'Hello! I\'m here to help you open a new current account. Let\'s get started!';
+                } else if (formType === 'debit_card') {
+                    welcomeMessage = 'Hello! I\'m here to help you apply for a debit card for your NRE account. Let\'s get started!';
+                } else if (formType === 'loan_application') {
+                    welcomeMessage = 'Hello! I\'m here to help you apply for a loan from State Bank of India. Let\'s get started!';
+                } else if (formType === 'withdrawal') {
+                    welcomeMessage = 'Hello! I\'m here to help you fill out your Savings Bank Withdrawal Form. Let\'s get started!';
+                } else if (formType === 'kyc') {
+                    welcomeMessage = 'Hello! I\'m here to help you update your KYC information for existing customers. Let\'s get started!';
+                } else if (formType === 'account_closure') {
+                    welcomeMessage = 'Hello! I\'m here to help you with your account closure request. Let\'s process this carefully.';
+                } else {
+                    welcomeMessage = 'Hello! I am here to help you with banking forms. What would you like to do today? Deposit money into your account, or send money to someone through Demand Draft?';
+                }
+                speakText(welcomeMessage);
+            }, 1000);
+        });
+
+        // Event listeners
+        sendBtn.addEventListener('click', () => sendMessage(false));
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage(false);
+            }
+        });
+        
+        // Test Data Button
+        document.getElementById('testDataBtn').addEventListener('click', function() {
+            const testData = getTestDataForForm(formType);
+            if (testData) {
+                // Save test data to localStorage
+                localStorage.setItem(testData.storageKey, JSON.stringify(testData.data));
+                // Open the form in a new tab
+                window.open(testData.url, '_blank');
+            } else {
+                alert('No test data available for this form type');
+            }
+        });
+        
+        function getTestDataForForm(type) {
+            const today = new Date().toISOString().split('T')[0];
+            const todayDMY = new Date().toLocaleDateString('en-GB');
+            
+            const testDataMap = {
+                'deposit': {
+                    storageKey: 'depositSlipData',
+                    url: '/form',
+                    data: {
+                        form_type: 'DEPOSIT',
+                        branch_name: 'Main Branch',
+                        date: todayDMY,
+                        account_number: '123456789012',
+                        account_holder_name: 'Test User',
+                        telephone_mobile_number: '9876543210',
+                        email_id: 'test@example.com',
+                        deposit_type: 'Cash',
+                        total_amount: '5000',
+                        amount_in_words: 'Five Thousand Rupees',
+                        denom_2000_qty: '2',
+                        denom_500_qty: '2',
+                        denom_200_qty: '0',
+                        denom_100_qty: '0',
+                        denom_50_qty: '0',
+                        denom_20_qty: '0',
+                        denom_10_qty: '0',
+                        denom_5_qty: '0',
+                        denom_coins_qty: '0'
+                    }
+                },
+                'dd': {
+                    storageKey: 'ddFormData',
+                    url: '/dd',
+                    data: {
+                        form_type: 'DD',
+                        branch_name: 'Main Branch',
+                        date: todayDMY,
+                        instrument_type: 'DD',
+                        in_favour_of: 'John Doe',
+                        amount: '10000',
+                        amount_in_words: 'Ten Thousand Rupees',
+                        payable_at_branch: 'Mumbai',
+                        applicant_name: 'Test User',
+                        denom_500_qty: '20',
+                        denom_100_qty: '0',
+                        denom_50_qty: '0',
+                        denom_20_qty: '0',
+                        denom_10_qty: '0',
+                        denom_5_qty: '0',
+                        denom_2_qty: '0',
+                        denom_1_qty: '0'
+                    }
+                },
+                'tax_challan': {
+                    storageKey: 'taxChallanData',
+                    url: '/tax_challan',
+                    data: {
+                        form_type: 'TAX_CHALLAN',
+                        pan: 'ABCDE1234F',
+                        full_name: 'Test User',
+                        address: '123 Test Street, Mumbai, Maharashtra',
+                        tel_no: '9876543210',
+                        pin_code: '400001',
+                        assessment_year: '2024-25',
+                        tax_type: '0021',
+                        tax_code: '0021',
+                        income_tax: '50000',
+                        surcharge: '5000',
+                        education_cess: '1100',
+                        interest: '0',
+                        penalty: '0',
+                        others: '0',
+                        total_amount: '56100',
+                        total_words: 'Fifty Six Thousand One Hundred Rupees',
+                        bank_branch: 'State Bank of India, Main Branch',
+                        payment_date: todayDMY,
+                        payment_mode: 'Cash',
+                        debit_date: todayDMY
+                    }
+                },
+                'account_opening': {
+                    storageKey: 'accountOpeningData',
+                    url: '/account_opening',
+                    data: {
+                        form_type: 'ACCOUNT_OPENING',
+                        branch: 'Main Branch',
+                        form_date: todayDMY,
+                        product_type: 'savings',
+                        debit_card: 'required',
+                        first_name: 'Test',
+                        middle_name: 'Kumar',
+                        last_name: 'User',
+                        dob: '15/05/1990',
+                        place_of_birth: 'Mumbai',
+                        document_type: 'aadhaar',
+                        document_number: '1234 5678 9012',
+                        iin: '123456789012',
+                        date_of_issuance: '01/01/2020',
+                        expiry_date: 'N/A',
+                        issued_by: 'UIDAI',
+                        address: '123 Test Street, Andheri',
+                        city: 'Mumbai',
+                        postal_code: '400058',
+                        mobile_phone: '9876543210',
+                        email: 'test@example.com',
+                        employer: 'Test Company Ltd',
+                        position_title: 'Software Engineer',
+                        monthly_salary: '75000',
+                        entrepreneur: 'no',
+                        family_status: 'single',
+                        num_children: '0',
+                        purpose: 'savings',
+                        card_delivery: 'branch',
+                        signature_date: todayDMY,
+                        signature_place: 'Mumbai'
+                    }
+                },
+                'debit_card': {
+                    storageKey: 'debitCardData',
+                    url: '/debit_card',
+                    data: {
+                        form_type: 'DEBIT_CARD',
+                        nre_account_number: '12345678901234567890',
+                        customer_id: 'CUST123456',
+                        poa_holder: 'Test POA Holder',
+                        mother_maiden_name: 'Smith',
+                        dob: '1990-05-15',
+                        image_card: 'no',
+                        image_code: '',
+                        card_name: 'TEST USER',
+                        card_type: 'new',
+                        application_type: 'first',
+                        cross_self_id: '',
+                        bin_number: '',
+                        poa_signature_name: 'Test POA Holder',
+                        account_holder_name: 'Test User'
+                    }
+                },
+                'loan_application': {
+                    storageKey: 'loanApplicationData',
+                    url: '/loan_application',
+                    data: {
+                        form_type: 'LOAN_APPLICATION',
+                        account_number: '123456789012',
+                        applicant_name: 'Test User',
+                        home_address: '123 Test Street, Mumbai',
+                        previous_address: '',
+                        home_number: '',
+                        mobile_number: '9876543210',
+                        personal_email: 'test@example.com',
+                        dob: '15/05/1990',
+                        marital_status: 'single',
+                        dependents: '0',
+                        employer: 'Test Company',
+                        grade: 'Manager',
+                        employer_address: 'BKC, Mumbai',
+                        employment_type: 'permanent',
+                        service_length: '5 years',
+                        work_email: 'test@company.com',
+                        work_tel: '022-12345678',
+                        loan_amount: '500000',
+                        loan_purpose: 'home',
+                        existing_loan: '0',
+                        shares: '0',
+                        loan_account: '0',
+                        net_loan: '500000',
+                        salary_deduction: '15000',
+                        repayment_period: '60',
+                        repayment_method: 'monthly',
+                        signature_date: today,
+                        signature_place: 'Mumbai'
+                    }
+                },
+                'withdrawal': {
+                    storageKey: 'withdrawalData',
+                    url: '/withdrawal',
+                    data: {
+                        form_type: 'WITHDRAWAL',
+                        branch: 'Main Branch',
+                        withdrawal_date: todayDMY,
+                        account_holder_name: 'Test User',
+                        account_number: '12345678901234',
+                        amount: '5000',
+                        amount_in_words: 'Five Thousand Only',
+                        phone_number: '9876543210'
+                    }
+                },
+                'kyc': {
+                    storageKey: 'kycData',
+                    url: '/kyc',
+                    data: {
+                        form_type: 'KYC',
+                        branch: 'Main Branch',
+                        customer_name: 'Ajith R',
+                        account_no: '12345678901234',
+                        dob: '15/05/1990',
+                        address: '123 Main Street, Trivandrum',
+                        father_husband: 'Rajan K',
+                        mother_name: 'Suma R',
+                        city: 'Trivandrum',
+                        post_office: 'Karamana',
+                        state: 'Kerala',
+                        pin_code: '695002',
+                        mobile_no: '9876543210'
+                    }
+                },
+                'account_closure': {
+                    storageKey: 'accountClosureData',
+                    url: '/account_closure',
+                    data: {
+                        form_type: 'ACCOUNT_CLOSURE',
+                        date: todayDMY,
+                        customer_id: '1234567890',
+                        account_number: '123456789012',
+                        customer_name: 'Ajith R',
+                        purpose_closure: 'Relocating to another city',
+                        beneficiary_acc: '987654321012',
+                        holder_name: 'Ajith R',
+                        account_type: 'savings',
+                        bank_name: 'HDFC Bank',
+                        branch_city: 'Mumbai Central',
+                        ifsc_code: 'HDFC0001234'
+                    }
+                }
+            };
+            
+            return testDataMap[type] || null;
+        }
+        voiceBtn.addEventListener('click', toggleRecording);
+        resetBtn.addEventListener('click', resetConversation);
+    </script>
+</body>
+</html>

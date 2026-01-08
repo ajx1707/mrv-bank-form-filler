@@ -1,0 +1,35 @@
+# Environment variables - NEVER COMMIT THESE
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Flask
+instance/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
