@@ -364,26 +364,7 @@
                 <label for="transfer_option">To another bank account by electronic transfer:</label>
             </div>
             
-            <div class="form-group">
-                <label>Other Bank Account No.</label>
-                <div class="box-input-group" style="max-width: 500px;">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                    <input type="text" maxlength="1">
-                </div>
-            </div>
+            
             
             <div class="form-group">
                 <label>Beneficiary Account No.</label>
@@ -537,40 +518,95 @@
     
     <script>
         window.addEventListener('load', function() {
+            // Helper function to fill box inputs
+            function fillBoxInputs(prefix, value) {
+                if (!value) return;
+                const valueStr = value.toString();
+                for (let i = 0; i < valueStr.length; i++) {
+                    const element = document.getElementById(`${prefix}_${i + 1}`);
+                    if (element) element.value = valueStr[i];
+                }
+            }
+            
+            // Always fill current date by default
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = String(today.getFullYear());
+            const currentDate = day + month + year; // DDMMYYYY format
+            fillBoxInputs('date', currentDate);
+            
             const rawData = localStorage.getItem('accountClosureData');
             if (rawData) {
                 try {
                     const data = JSON.parse(rawData);
+                    
                     function findValue(...fieldNames) {
                         for (let fieldName of fieldNames) {
                             if (data[fieldName] !== undefined && data[fieldName] !== null && data[fieldName] !== '') return data[fieldName];
                         }
                         return '';
                     }
-                    function fillBoxInputs(prefix, value) {
-                        if (!value) return;
-                        const valueStr = value.toString();
-                        for (let i = 0; i < valueStr.length; i++) {
-                            const element = document.getElementById(`${prefix}_${i + 1}`);
-                            if (element) element.value = valueStr[i];
-                        }
-                    }
+                    
+                    const fillField = (id, value) => { 
+                        const el = document.getElementById(id); 
+                        if (el && value) el.value = value; 
+                    };
+                    
+                    // Override date if provided in data
                     const dateValue = findValue('date');
                     if (dateValue) fillBoxInputs('date', dateValue.replace(/\//g, ''));
+                    
+                    // Fill customer details
                     fillBoxInputs('cust_id', findValue('customer_id', 'cust_id'));
                     fillBoxInputs('acc', findValue('account_number', 'account_num'));
-                    const fillField = (id, value) => { const el = document.getElementById(id); if (el && value) el.value = value; };
                     fillField('customer_name', findValue('customer_name', 'name'));
                     fillField('purpose_closure', findValue('purpose_closure', 'purpose'));
-                    fillField('beneficiary_acc', findValue('beneficiary_acc'));
-                    fillField('holder_name', findValue('holder_name'));
-                    fillField('bank_name', findValue('bank_name'));
-                    fillField('branch_city', findValue('branch_city'));
-                    fillField('ifsc_code', findValue('ifsc_code', 'ifsc'));
-                    const accountType = findValue('account_type');
-                    if (accountType) { const radio = document.getElementById(accountType); if (radio) radio.checked = true; }
+                    
+                    // Handle receipt mode and check appropriate checkbox
+                    const receiptMode = findValue('receipt_mode');
+                    
+                    if (receiptMode === 'electronic_transfer') {
+                        // Check electronic transfer option
+                        const transferCheckbox = document.getElementById('transfer_option');
+                        if (transferCheckbox) transferCheckbox.checked = true;
+                        
+                        // Fill electronic transfer details
+                        fillField('beneficiary_acc', findValue('beneficiary_acc'));
+                        fillField('holder_name', findValue('holder_name'));
+                        fillField('bank_name', findValue('bank_name'));
+                        fillField('branch_city', findValue('branch_city'));
+                        fillField('ifsc_code', findValue('ifsc_code', 'ifsc'));
+                        
+                        const accountType = findValue('account_type');
+                        if (accountType) { 
+                            const radio = document.getElementById(accountType); 
+                            if (radio) radio.checked = true; 
+                        }
+                    } 
+                    else if (receiptMode === 'demand_draft') {
+                        const draftCheckbox = document.getElementById('demand_draft');
+                        if (draftCheckbox) draftCheckbox.checked = true;
+                    }
+                    else if (receiptMode === 'idfc_account') {
+                        const idfcCheckbox = document.getElementById('idfc_account');
+                        if (idfcCheckbox) idfcCheckbox.checked = true;
+                        
+                        // Fill IDFC account details
+                        fillField('idfc_account_no', findValue('idfc_account_no'));
+                        fillField('idfc_city', findValue('idfc_city'));
+                        fillField('idfc_holder_name', findValue('idfc_holder_name'));
+                    }
+                    else if (receiptMode === 'cash') {
+                        const cashCheckbox = document.getElementById('cash_option');
+                        if (cashCheckbox) cashCheckbox.checked = true;
+                    }
+                    
+                    // Print after a short delay
                     setTimeout(() => window.print(), 1000);
-                } catch (error) { console.error('Error:', error); }
+                } catch (error) { 
+                    console.error('Error:', error); 
+                }
             }
         });
     </script>
