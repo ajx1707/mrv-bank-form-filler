@@ -488,16 +488,7 @@
                     </svg>
                     Test Data
                 </button>
-                <a href="/form" target="_blank" class="btn btn-success" style="text-decoration: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="16" y1="13" x2="8" y2="13"/>
-                        <line x1="16" y1="17" x2="8" y2="17"/>
-                        <polyline points="10 9 9 9 8 9"/>
-                    </svg>
-                    View Form
-                </a>
+                
             </div>
         </div>
         
@@ -573,6 +564,13 @@
                     <line x1="9" y1="9" x2="15" y2="15"/>
                 </svg>
                 Hello! I'm here to help you with your account closure request. Let's process this carefully.
+            </div>
+            {% elif form_type == 'remittance' %}
+            <div class="message assistant">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
+                </svg>
+                Hello! I'm here to help you with your foreign remittance application (Form A2). Let's get started!
             </div>
             {% else %}
             <div class="message assistant">
@@ -1504,6 +1502,26 @@
                         bank_name: 'HDFC Bank',
                         branch_city: 'Mumbai Central',
                         ifsc_code: 'HDFC0001234'
+                    }
+                },
+                'remittance': {
+                    storageKey: 'remittanceData',
+                    url: '/remittance',
+                    data: {
+                        form_type: 'REMITTANCE',
+                        form_no: 'A2/2026/001',
+                        currency: 'USD',
+                        amount: '5000',
+                        applicant_name: 'Test User',
+                        applicant_address: '123 Park Street, Mumbai 400001',
+                        account_no: '123456789012',
+                        forex_amount: '5000 USD',
+                        remit_method: 'direct_transfer',
+                        remit_beneficiary_name: 'John Smith',
+                        bank_name_address: 'Bank of America, 123 Wall Street, New York, USA',
+                        beneficiary_account: 'US1234567890',
+                        declarant_name: 'Test User',
+                        declaration_date: todayDMY
                     }
                 }
             };
