@@ -291,22 +291,163 @@ def get_account_closure_prompt():
 3. **account_number** - Account number to be closed (12 digits)
 4. **customer_name** - Full name of the customer
 5. **purpose_closure** - Reason for closing the account
-6. **beneficiary_acc** - Beneficiary account number for balance transfer
-7. **holder_name** - Name of the account holder receiving the balance
-8. **account_type** - Type of account (savings or current)
-9. **bank_name** - Name of the bank for transfer
-10. **branch_city** - Branch name and city
-11. **ifsc_code** - IFSC code (11 characters)
+6. **has_balance** - Is there any balance in the account? (yes/no)
+7. **balance_amount** - If yes, approximate balance amount (for validation)
+8. **receipt_mode** - How to receive balance: "electronic_transfer", "demand_draft", "idfc_account", or "cash"
+
+**FOR ELECTRONIC TRANSFER:**
+9. **other_bank_account** - Other bank account number (optional, can use beneficiary_acc)
+10. **beneficiary_acc** - Beneficiary account number for balance transfer
+11. **holder_name** - Name of the account holder receiving the balance
+12. **account_type** - Type of account (savings or current)
+13. **bank_name** - Name of the bank for transfer
+14. **branch_city** - Branch name and city
+15. **ifsc_code** - IFSC code (11 characters)
+
+**FOR DEMAND DRAFT:**
+- Will be prepared by bank (just mention "demand_draft" in receipt_mode)
+
+**FOR IDFC ACCOUNT:**
+16. **idfc_account_no** - IDFC account number
+17. **idfc_city** - City of IDFC branch
+18. **idfc_holder_name** - Name of account holder
+
+**FOR CASH:**
+- Only allowed if balance < ₹20,000
+- Just mention "cash" in receipt_mode
 
 **COLLECTION STRATEGY:**
-- Greet warmly: "I'll help you with your account closure request."
-- Ask for customer ID, account number to be closed, and customer name first
-- Then ask for the reason for closure
-- Collect transfer details: "Where should we transfer the balance? I'll need the beneficiary account number, account holder name, account type (savings or current), bank name, branch/city, and IFSC code"
-- Date will auto-fill with today's date if not mentioned
+1. ACCOUNT INFO: "Customer ID (10 digits), account number to be closed (12 digits), and your full name"
 
-**JSON OUTPUT FORMAT:**
-{{FORM_DATA: {{"form_type": "ACCOUNT_CLOSURE", "date": "07/01/2026", "customer_id": "1234567890", "account_number": "123456789012", "customer_name": "Ajith R", "purpose_closure": "Moving to another city", "beneficiary_acc": "987654321012", "holder_name": "Ajith R", "account_type": "savings", "bank_name": "HDFC Bank", "branch_city": "Mumbai Central", "ifsc_code": "HDFC0001234"}}}}
+2. PURPOSE: "What is the reason for closing this account?"
+
+3. BALANCE CHECK: "Is there any balance remaining in your account? If yes, approximately how much?"
+
+4. IF BALANCE EXISTS:
+   - If amount > ₹20,000: "Since the balance exceeds ₹20,000, cash withdrawal is not allowed. Please choose:
+     • Electronic transfer to another bank account
+     • Demand Draft
+     • Transfer to another IDFC account"
+   
+   - If amount ≤ ₹20,000: "You can receive your balance through:
+     • Electronic transfer to another bank account
+     • Demand Draft
+     • Transfer to another IDFC account
+     • Cash (since balance is less than ₹20,000)"
+
+5. BASED ON CHOICE:
+   **If Electronic Transfer:**
+   "I'll need the following details for the transfer:
+   - Beneficiary account number
+   - Account holder name
+   - Account type (savings or current)
+   - Bank name
+   - Branch name and city
+   - IFSC code (11 characters)"
+   
+   **If Demand Draft:**
+   "The bank will prepare a demand draft for you. Where should it be sent, and in whose name?"
+   
+   **If IDFC Account:**
+   "Please provide:
+   - IDFC account number
+   - City of the branch
+   - Account holder name"
+   
+   **If Cash:**
+   "Noted. You'll receive the balance in cash when you visit the branch."
+
+6. DATE: Auto-fill with today's date
+
+**IMPORTANT RULES:**
+- Always ask about balance before asking receipt mode
+- Validate cash option only if balance < ₹20,000
+- For electronic transfer, all fields are mandatory
+- Customer ID must be exactly 10 digits
+- Account number must be exactly 12 digits
+- IFSC code should be 11 characters
+
+**JSON OUTPUT FORMAT (Electronic Transfer):**
+{{FORM_DATA: {{"form_type": "ACCOUNT_CLOSURE", "date": "09/01/2026", "customer_id": "1234567890", "account_number": "123456789012", "customer_name": "Ajith R", "purpose_closure": "Moving to another city", "has_balance": "yes", "balance_amount": "50000", "receipt_mode": "electronic_transfer", "beneficiary_acc": "987654321012", "holder_name": "Ajith R", "account_type": "savings", "bank_name": "HDFC Bank", "branch_city": "Mumbai Central", "ifsc_code": "HDFC0001234"}}}}
+
+**JSON OUTPUT FORMAT (Cash):**
+{{FORM_DATA: {{"form_type": "ACCOUNT_CLOSURE", "date": "09/01/2026", "customer_id": "1234567890", "account_number": "123456789012", "customer_name": "Ajith R", "purpose_closure": "No longer needed", "has_balance": "yes", "balance_amount": "15000", "receipt_mode": "cash"}}}}
+
+**JSON OUTPUT FORMAT (No Balance):**
+{{FORM_DATA: {{"form_type": "ACCOUNT_CLOSURE", "date": "09/01/2026", "customer_id": "1234567890", "account_number": "123456789012", "customer_name": "Ajith R", "purpose_closure": "Account not in use", "has_balance": "no", "balance_amount": "0", "receipt_mode": "none"}}}}
+
+**JSON OUTPUT FORMAT (IDFC Account):**
+{{FORM_DATA: {{"form_type": "ACCOUNT_CLOSURE", "date": "09/01/2026", "customer_id": "1234567890", "account_number": "123456789012", "customer_name": "Ajith R", "purpose_closure": "Consolidating accounts", "has_balance": "yes", "balance_amount": "30000", "receipt_mode": "idfc_account", "idfc_account_no": "456789012345", "idfc_city": "Mumbai", "idfc_holder_name": "Ajith R"}}}}
+
+**JSON OUTPUT FORMAT (Demand Draft):**
+{{FORM_DATA: {{"form_type": "ACCOUNT_CLOSURE", "date": "09/01/2026", "customer_id": "1234567890", "account_number": "123456789012", "customer_name": "Ajith R", "purpose_closure": "Relocating abroad", "has_balance": "yes", "balance_amount": "75000", "receipt_mode": "demand_draft"}}}}
+""" + get_confirmation_instructions()
+
+def get_remittance_prompt():
+    """System prompt for Remittance Abroad Form (Form A2)"""
+    return get_base_prompt() + """
+
+**FORM TYPE: REMITTANCE ABROAD (Form A2)**
+
+**REQUIRED FIELDS:**
+1. **form_no** - Form number (optional, user can skip)
+2. **currency** - Currency code (USD, EUR, GBP, AUD, CAD, JPY, etc.)
+3. **amount** - Amount to be remitted
+4. **applicant_name** - Full name of the applicant
+5. **applicant_address** - Complete address
+6. **account_no** - Bank account number
+7. **forex_amount** - Amount with currency (can be same as amount + currency)
+8. **remit_method** - How to send: "draft", "direct_transfer", "travellers_cheques", or "currency_notes"
+
+**FOR DRAFT METHOD:**
+9. **beneficiary_name** - Name of beneficiary
+10. **beneficiary_address** - Address of beneficiary
+
+**FOR DIRECT TRANSFER METHOD:**
+11. **remit_beneficiary_name** - Name of beneficiary
+12. **bank_name_address** - Bank name and complete address
+13. **beneficiary_account** - Beneficiary's account number
+
+**FOR TRAVELLERS CHEQUES OR CURRENCY NOTES:**
+- No additional details needed
+
+**COLLECTION STRATEGY:**
+1. BASIC: "I'll help you with your foreign remittance. First, which currency do you want to send (USD, EUR, GBP, etc.)? How much amount? Do you have a form number, or should I skip that?"
+
+2. YOUR DETAILS: "Now your details: Full name, complete address, and your bank account number"
+
+3. REMITTANCE METHOD: "How would you like to send this money abroad? You can choose:
+   • Draft (Demand Draft) - I'll need beneficiary's name and address
+   • Direct Bank Transfer - I'll need beneficiary's name, their bank details, and account number
+   • Travellers Cheques
+   • Foreign Currency Notes"
+
+4. BASED ON CHOICE:
+   **If Draft:** "Beneficiary's full name and complete address?"
+   **If Direct Transfer:** "Beneficiary's name, their bank's name and address, and their account number?"
+   **If Travellers Cheques or Notes:** "Noted! No additional details needed."
+
+5. CONFIRMATION: Show summary and confirm
+
+**IMPORTANT RULES:**
+- Currency should be standard codes (USD, EUR, GBP, AUD, CAD, JPY, etc.)
+- Form number is OPTIONAL - skip if user doesn't have one
+- AD Code and Equivalent Rs. are filled by bank - don't ask for these
+- Only ONE remittance method can be selected
+- Date is auto-filled with today's date
+- Amount should match forex_amount (just add currency)
+
+**JSON OUTPUT FORMAT (Draft Method):**
+{{FORM_DATA: {{"form_type": "REMITTANCE", "form_no": "A2/2026/001", "currency": "USD", "amount": "5000", "applicant_name": "Ajith R", "applicant_address": "123 Main Street, Mumbai 400001", "account_no": "123456789012", "forex_amount": "5000 USD", "remit_method": "draft", "beneficiary_name": "John Smith", "beneficiary_address": "456 Park Avenue, New York, USA", "declarant_name": "Ajith R", "declaration_date": "09/01/2026"}}}}
+
+**JSON OUTPUT FORMAT (Direct Transfer):**
+{{FORM_DATA: {{"form_type": "REMITTANCE", "form_no": "", "currency": "EUR", "amount": "3000", "applicant_name": "Ajith R", "applicant_address": "789 MG Road, Delhi 110001", "account_no": "987654321012", "forex_amount": "3000 EUR", "remit_method": "direct_transfer", "remit_beneficiary_name": "Marie Dubois", "bank_name_address": "BNP Paribas, 16 Boulevard des Italiens, Paris, France", "beneficiary_account": "FR7612345678901234567890123", "declarant_name": "Ajith R", "declaration_date": "09/01/2026"}}}}
+
+**JSON OUTPUT FORMAT (Travellers Cheques):**
+{{FORM_DATA: {{"form_type": "REMITTANCE", "form_no": "", "currency": "GBP", "amount": "2000", "applicant_name": "Ajith R", "applicant_address": "101 Park Street, Kolkata 700016", "account_no": "456789012345", "forex_amount": "2000 GBP", "remit_method": "travellers_cheques", "declarant_name": "Ajith R", "declaration_date": "09/01/2026"}}}}
+
+**JSON OUTPUT FORMAT (Currency Notes):**
+{{FORM_DATA: {{"form_type": "REMITTANCE", "form_no": "A2/2026/100", "currency": "AUD", "amount": "1500", "applicant_name": "Ajith R", "applicant_address": "25 Beach Road, Chennai 600001", "account_no": "321098765432", "forex_amount": "1500 AUD", "remit_method": "currency_notes", "declarant_name": "Ajith R", "declaration_date": "09/01/2026"}}}}
 """ + get_confirmation_instructions()
 
 def get_system_prompt(form_type):
@@ -320,7 +461,8 @@ def get_system_prompt(form_type):
         'loan_application': get_loan_application_prompt(),
         'withdrawal': get_withdrawal_prompt(),
         'kyc': get_kyc_prompt(),
-        'account_closure': get_account_closure_prompt()
+        'account_closure': get_account_closure_prompt(),
+        'remittance': get_remittance_prompt()
     }
     
     return prompts.get(form_type, get_base_prompt() + get_confirmation_instructions())

@@ -103,6 +103,10 @@ def kyc():
 def account_closure():
     return render_template('acc_close.html')
 
+@app.route('/remittance')
+def remittance():
+    return render_template('Remittance.html')
+
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
     try:
@@ -155,8 +159,8 @@ def chat():
         form_type = data.get('form_type', '')  # Get pre-selected form type
         is_from_audio = data.get('is_from_audio', False)  # Check if input is from audio
         
-        # Use Gemini for both audio and text (OpenRouter alternative)
-        use_gemini = True  # Changed to always use Gemini
+        # Use Gemini ONLY for audio, OpenRouter/Groq for text
+        use_gemini = is_from_audio
         
         # Debug logging
         print(f"DEBUG: form_type={form_type}, is_from_audio={is_from_audio}, use_gemini={use_gemini}")
@@ -280,28 +284,62 @@ def chat():
                 elif form_type == 'account_closure':
                     form_instruction = """The user has selected ACCOUNT CLOSURE REQUEST FORM for IDFC First Bank.
                     
-                    COLLECTION STRATEGY - Clear and Professional:
-                    
-                    This form closes an existing account with 11 fields. Ask in these groups:
+                    COLLECTION STRATEGY - Balance-Aware and Professional:
                     
                     1. ACCOUNT INFO: "Customer ID (10 digits), account number to be closed (12 digits), and your full name"
+                    
                     2. PURPOSE: "What is the reason for closing this account?"
-                    3. TRANSFER DETAILS: "Where should we transfer your remaining balance? I'll need:
-                       - Beneficiary account number
-                       - Account holder name
-                       - Account type (savings or current)
-                       - Bank name
-                       - Branch name and city
-                       - IFSC code (11 characters)"
-                    4. DATE: "Date of request (DD/MM/YYYY) - or I can use today's date"
+                    
+                    3. BALANCE CHECK: "Is there any balance remaining in your account? If yes, approximately how much?"
+                    
+                    4. IF BALANCE EXISTS, ask how they want to receive it:
+                       - If balance > ₹20,000: Offer electronic transfer, demand draft, or IDFC account (NO CASH)
+                       - If balance ≤ ₹20,000: Offer all options including cash
+                    
+                    5. BASED ON THEIR CHOICE:
+                       • Electronic Transfer: Collect beneficiary account, holder name, account type, bank name, branch/city, IFSC
+                       • Demand Draft: Just confirm (bank will prepare)
+                       • IDFC Account: Collect IDFC account number, city, holder name
+                       • Cash: Just confirm (only if < ₹20,000)
+                    
+                    6. DATE: Auto-use today's date
                     
                     IMPORTANT:
-                    - Customer ID must be exactly 10 digits
-                    - Account number must be exactly 12 digits
-                    - IFSC code should be 11 characters
-                    - Date auto-fills with today if not mentioned
+                    - ALWAYS ask about balance BEFORE asking transfer details
+                    - Validate cash option based on balance amount
+                    - Customer ID must be 10 digits, Account number 12 digits
                     
                     Start by greeting professionally and asking for customer ID, account number, and customer name."""
+                elif form_type == 'remittance':
+                    form_instruction = """The user has selected REMITTANCE ABROAD FORM (Form A2).
+                    
+                    COLLECTION STRATEGY - Simple and Clear:
+                    
+                    This form is for sending money abroad. Collect in these groups:
+                    
+                    1. BASIC INFO: "Form number (if you have one, otherwise skip), which currency (USD, EUR, GBP, etc.), and the amount you want to send"
+                    
+                    2. YOUR DETAILS: "Your full name, complete address, and bank account number"
+                    
+                    3. REMITTANCE METHOD: "How would you like to send the money? Choose one:
+                       • Issue a Draft (DD) - Requires beneficiary name and address
+                       • Direct Bank Transfer - Requires beneficiary name, bank name/address, and account number
+                       • Travellers Cheques - Just mention this option
+                       • Foreign Currency Notes - Just mention this option"
+                    
+                    4. BASED ON METHOD:
+                       If Draft: "Beneficiary's name and complete address"
+                       If Direct Transfer: "Beneficiary's name, bank name and address, beneficiary's account number"
+                       If Travellers Cheques or Notes: Just confirm the choice
+                    
+                    5. DATE: Auto-use today's date for declaration
+                    
+                    IMPORTANT:
+                    - Currency examples: USD, EUR, GBP, AUD, CAD, JPY
+                    - AD Code and Equivalent Rs. are filled by bank (don't ask)
+                    - Only ONE remittance method can be selected
+                    
+                    Start by greeting and asking for the currency, amount, and form number (optional)."""
                 else:
                     form_instruction = "Greet the user and ask which form they'd like to fill."
                 
