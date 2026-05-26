@@ -1,12 +1,13 @@
 # 🏦 Banking Form Assistant
 
 An AI-powered voice and text assistant for filling out banking forms, designed especially for elderly users and those who are not tech-savvy.
-
+## 🔗Live Demo
+https://mrv-bank-form-filler-1.onrender.com
 ## ✨ Features
 
 - **Voice Input**: Speak naturally to fill forms using audio transcription
 - **Text Input**: Type responses if preferred
-- **Multiple Form Types**: Supports 9 different banking forms
+- **Multiple Form Types**: Supports 10 different banking forms
 - **Smart Assistance**: Auto-fills dates, validates data, converts amounts to words
 - **Elderly-Friendly**: Patient, clear instructions and simple interface
 
@@ -164,33 +165,7 @@ curl -X POST -H "Content-Type: application/json" \
 | `/get_form_data` | POST | Retrieve collected data |
 | `/reset_conversation` | POST | Clear session |
 
-## 🤝 Contributing
 
-1. Fork the repository
-2. Create feature branch: `git checkout -b feature-name`
-3. Commit changes: `git commit -am 'Add feature'`
-4. Push to branch: `git push origin feature-name`
-5. Submit pull request
-
-## 📄 License
-
-This project is for educational purposes. Ensure compliance with banking regulations when deploying in production.
-
-## ⚠️ Important Notes
-
-- This is a demo application
-- Always verify form data before submission
-- Maintain proper data privacy and security
-- Test thoroughly before production use
-- Keep API keys secure
-
-## 🆘 Support
-
-For issues or questions:
-1. Check [DEPLOYMENT.md](DEPLOYMENT.md)
-2. Review error logs
-3. Verify environment variables
-4. Check API documentation
 
 ---
 
